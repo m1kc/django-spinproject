@@ -19,8 +19,7 @@ RUN apt-get update \\
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install poetry
-RUN poetry config
-RUN echo "[settings]\\nvirtualenvs.create=false\\n\\n[repositories]\\n" > /root/.config/pypoetry/config.toml
+RUN poetry config virtualenvs.create false
 
 COPY pyproject.toml ./
 COPY poetry.lock ./
