@@ -9,7 +9,11 @@ assert len(argv) == 2, 'Must provide: name, path'
 name, path = argv
 
 
-template = f'''docker:
+template = f'''lint:
+	flake8 --select=C,F,E101,E112,E502,E72,E73,E74,E9,W291,W6 --exclude=.cache,migrations
+
+
+docker:
 	# TODO: update tag
 	# docker build -t 'docker.mycompany.local:5000/mycompany/lm-dash-backend' .
 
