@@ -100,6 +100,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = '"""+name+""".wsgi.application'
+# ASGI_APPLICATION = '"""+name+""".asgi.application'  # uncomment if needed
 
 
 # Password validation
@@ -199,7 +200,7 @@ subprocess.run(['mv', os.path.join(path, name, 'settings.py'), os.path.join(path
 print('Writing new settings.py...')
 with open(os.path.join(path, name, 'settings.py'), 'w') as f:
 	f.write(template)
-	
+
 print(f"""Note: some packages are needed for this file to work, namely:
 - django-environ
 - whitenoise
