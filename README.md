@@ -37,4 +37,4 @@ Also, you can use `enhance-*` scripts separately (with the same parameters) if y
 ### Feb 20, 2020
 
 * Makefile now includes an additional target, `lint`, for linting your project with `flake8`. Give it a try: `$ make lint`.
-* Dockerfile is now working properly with most recent version of Poetry.
+* Dockerfile now works properly with most recent version of Poetry.
