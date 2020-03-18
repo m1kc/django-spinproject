@@ -8,7 +8,8 @@ Opinionated version of `startproject` with some popular third-party packages. St
     * Also, `django-postgres-readonly` (in case you have R/O databases);
     * But otherwise, it's still your standard `settings.py` you used to see in every other project.
 * `script/bootstrap` and other [scripts to rule them all](https://github.blog/2015-06-30-scripts-to-rule-them-all/) so your fellow developers and maintainers don't ask you how to run this thing. Current versions of these scripts optimized for use with [poetry](https://python-poetry.org/), but you can easily adapt them for any Python package manager;
-* A basic `Dockerfile` (and a `Makefile` for its common usage patterns).
+* A basic `Dockerfile` (and `make` targets for its common usage patterns);
+* `make lint` command for linting with flake8.
 
 ## Requirements
 
@@ -26,3 +27,14 @@ python3 spinproject.py <project name> <path>
 ```
 
 Also, you can use `enhance-*` scripts separately (with the same parameters) if you only need to add one specific thing to existing project.
+
+## Planned features
+
+(for requests, create an issue or drop me a line at m1kc@yandex.ru)
+
+## Changelog
+
+### Feb 20, 2020
+
+* Makefile now includes an additional target, `lint`, for linting your project with `flake8`. Give it a try: `$ make lint`.
+* Dockerfile is now working properly with most recent version of Poetry.
