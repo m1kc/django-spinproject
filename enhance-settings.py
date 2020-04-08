@@ -201,10 +201,20 @@ print('Writing new settings.py...')
 with open(os.path.join(path, name, 'settings.py'), 'w') as f:
 	f.write(template)
 
+# .env files
+template = f'''DJANGO_SECRET_KEY=""
+DJANGO_DEBUG=True
+DJANGO_DEBUG_SQL=False
+DJANGO_ALLOWED_HOSTS=""
+DJANGO_DATABASE_URL="sqlite:///db.sqlite3"'''
+for filename in ['.env', '.env.example']:
+	with open(os.path.join(path, name, filename), 'w') as f:
+		print(f'Writing {filename}...')
+		f.write(template)
+
+
 print(f"""Note: some packages are needed for this file to work, namely:
 - django-environ
 - whitenoise
 - django-postgres-readonly (if you use r/o databases)
-
-Also, you need to create {path}/{name}/.env (and possibly .env.example) manually.
 """)
