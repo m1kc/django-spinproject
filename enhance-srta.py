@@ -67,6 +67,8 @@ for key in templates:
 		f.write(templates[key])
 	subprocess.run(f"chmod +x {shlex.quote(os.path.join(path, 'script', key))}", shell=True)
 
+print('WARNING: skipped creating `cibuild` (not implemented)')
+		       
 symlinks = {
 	'shell': 'console',
 	'run': 'server',
