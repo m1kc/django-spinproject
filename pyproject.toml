@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "django-spinproject"
+version = "1.0.1"
+description = "Opinionated version of `startproject` with some popular third-party packages. Starter pack includes: whitenoise, django-environ, logging, GitHub Scripts to Rule Them All, basic Dockerfile and Makefile."
+authors = ["m1kc (Max Musatov) <m1kc@yandex.ru>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/m1kc/django-spinproject"
+repository = "https://github.com/m1kc/django-spinproject.git"
+documentation = "https://github.com/m1kc/django-spinproject"
+keywords = ["django", "django-admin", "startproject", "template", "whitenoise", "django-environ", "SRTA"]
+classifiers = [
+    "Operating System :: OS Independent",
+]
+
+[tool.poetry.scripts]
+django-spinproject = 'django_spinproject.bin.spinproject:main'
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

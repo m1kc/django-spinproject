@@ -1,6 +1,6 @@
 # django-spinproject
 
-Opinionated version of `startproject` with some popular third-party packages. Starter pack includes:
+Opinionated version of `django-admin startproject` with some popular third-party packages. Starter pack includes:
 
 * `whitenoise` for painless work with static files;
 * `settings.py` file with `django-environ` support so you can define your databases and stuff with environment variables and `.env` files;
@@ -20,13 +20,10 @@ Generated files will work fine in Django >= 2.0, not tested in earlier versions.
 
 ## How to use
 
-Clone the repo, then run:
+1. Install the package: `pip install django-spinproject`
+2. `django-spinproject <project name> <path>`
 
-```
-python3 spinproject.py <project name> <path>
-```
-
-Also, you can use `enhance-*` scripts separately (with the same parameters) if you only need to add one specific thing to existing project.
+Also, take a look at `enhance-*` scripts (parameters are the same) if you only need to add one specific thing to existing project.
 
 ## Planned features
 
