@@ -29,6 +29,9 @@ Also, take a look at `enhance-*` scripts (parameters are the same) if you only n
 
 (for requests, create an issue or drop me a line at m1kc@yandex.ru)
 
+* .gitignore
+* Always call the main module `main`
+
 ## Changelog
 
 ### Feb 20, 2020
