@@ -31,6 +31,7 @@ Also, take a look at `enhance-*` scripts (parameters are the same) if you only n
 
 * .gitignore
 * Always call the main module `main`
+* Gitlab CI config
 
 ## Changelog
 
