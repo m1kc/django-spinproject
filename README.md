@@ -37,6 +37,10 @@ Also, take a look at `enhance-*` scripts (parameters are the same) if you only n
 
 ## Changelog
 
+### Feb 5, 2021
+
+* To avoid confusion, `python3` executable is now used instead of `python`.
+
 ### Feb 20, 2020
 
 * Makefile now includes an additional target, `lint`, for linting your project with `flake8`. Give it a try: `$ make lint`.
