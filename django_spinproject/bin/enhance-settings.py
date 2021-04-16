@@ -44,7 +44,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 def readonly(x):
-	x['ENGINE'] = 'django_postgres_readonly'
+	x['ENGINE'] = '"""+name+""".pg_readonly'
 	return x
 
 DATABASES = {
@@ -213,8 +213,13 @@ for filename in ['.env', '.env.example']:
 		f.write(template)
 
 
-print(f"""Note: some packages are needed for this file to work, namely:
-- django-environ
-- whitenoise
-- django-postgres-readonly (if you use r/o databases)
+print(f"""Note: manual installation of third-party packages is required.
+The following commands should do the trick:
+
+ cd "{path}"
+ poetry init
+ poetry add django
+ poetry add django-environ whitenoise
+
+If you don't use poetry, other package manager will do, too.
 """)
