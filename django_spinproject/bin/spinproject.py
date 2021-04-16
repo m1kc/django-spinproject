@@ -29,6 +29,9 @@ def main():
 		'makefile',
 		'settings',
 		# 'pytest',
+		'gitignore',
+		'dockerignore',
+		'pg-readonly',
 	]
 
 	for m in active_modules:
