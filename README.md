@@ -29,13 +29,18 @@ Also, take a look at `enhance-*` scripts (parameters are the same) if you only n
 
 (for requests, create an issue or drop me a line at m1kc@yandex.ru)
 
-* .gitignore
 * Always call the main module `main`
 * Gitlab CI config
-* `make clean`
-* Replace django-postgres-readonly with in-place implementation
+* pytest support
 
 ## Changelog
+
+### Apr 16, 2021
+
+* `.gitignore` to keep your VCS clean;
+* `.dockerignore` to keep your Docker images clean;
+* `make clean` to get rid of `__pycache__` files when you need that;
+* No need to install `django-postgres-readonly` anymore.
 
 ### Feb 5, 2021
 
