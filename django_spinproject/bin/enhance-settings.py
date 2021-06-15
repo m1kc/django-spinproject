@@ -213,8 +213,9 @@ for filename in ['.env', '.env.example']:
 		f.write(template)
 
 
-print(f"""Note: manual installation of third-party packages is required.
-The following commands should do the trick:
+print(f"""---
+Note: manual installation of third-party packages is required.
+These commands should do the trick:
 
  cd "{path}"
  poetry init
@@ -222,4 +223,4 @@ The following commands should do the trick:
  poetry add django-environ whitenoise
 
 If you don't use poetry, other package manager will do, too.
-""")
+---""")
