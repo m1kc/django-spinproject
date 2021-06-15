@@ -32,6 +32,7 @@ def main():
 		'gitignore',
 		'dockerignore',
 		'pg-readonly',
+		'gitlab-ci',
 	]
 
 	for m in active_modules:
