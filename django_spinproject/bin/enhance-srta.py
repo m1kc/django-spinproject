@@ -57,6 +57,12 @@ set -x
 
 script/bootstrap
 poetry run python manage.py migrate''',
+
+	"cibuild": '''#!/bin/bash
+set -e
+set -x
+
+script/test''',
 }
 
 import shlex
@@ -66,8 +72,6 @@ for key in templates:
 	with open(os.path.join(path, 'script', key), 'w') as f:
 		f.write(templates[key])
 	subprocess.run(f"chmod +x {shlex.quote(os.path.join(path, 'script', key))}", shell=True)
-
-print('WARNING: skipped creating `cibuild` (not implemented)')
 		       
 symlinks = {
 	'shell': 'console',
