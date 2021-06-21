@@ -48,8 +48,8 @@ poetry run python manage.py migrate''',
 set -e
 set -x
 
-echo "This project has no test suite."
-#poetry run pytest''',
+make lint
+poetry run pytest''',
 
 	"update": '''#!/bin/bash
 set -e

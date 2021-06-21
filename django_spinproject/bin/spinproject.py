@@ -37,6 +37,7 @@ def main():
 		'dockerignore',
 		'pg-readonly',
 		'gitlab-ci',
+		'pytest',
 	]
 
 	for m in active_modules:
