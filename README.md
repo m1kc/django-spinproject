@@ -21,19 +21,22 @@ Generated files will work fine in Django >= 2.0, not tested in earlier versions.
 ## How to use
 
 1. Install the package: `pip install django-spinproject`
-2. `django-spinproject <project name> <path>`
-
-Also, take a look at `enhance-*` scripts (parameters are the same) if you only need to add one specific thing to existing project.
+2. `django-spinproject <path>`
 
 ## Planned features
 
 (for requests, create an issue or drop me a line at m1kc@yandex.ru)
 
-* Always call the main module `main`
-* Gitlab CI config
-* pytest support
+* Some CLI flags to switch off the things you don't need.
 
 ## Changelog
+
+### Jun 21, 2021
+
+* pytest support 'cause you don't want to waste time on setting that up (give it a try: `script/test`);
+* Always call the settings directory `main` 'cause that's the only way to keep people sane when switching projects;
+* Add GitLab CI config generator 'cause you don't want to write one yourself;
+* flake8 isn't expected to be installed on your host system anymore.
 
 ### Apr 16, 2021
 
