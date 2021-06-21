@@ -221,6 +221,7 @@ These commands should do the trick:
  poetry init
  poetry add django
  poetry add django-environ whitenoise
+ poetry add --dev flake8
 
 If you don't use poetry, other package manager will do, too.
 ---""")
