@@ -7,15 +7,19 @@ import subprocess
 def main():
 	argv = sys.argv[1:]
 	if (len(argv) not in [1,2]) or (argv == ['-h']) or (argv == ['--help']):
-		print('Usage: startproject.py <name> [path]')
+		print('Usage:')
+		print('  startproject.py <path>')
+		print('')
+		print('Settings directory will be called `main`. You can override this')
+		print('by passing 2nd argument (deprecated).')
 		sys.exit(2)
 
-	name = argv[0]
+	name = 'main'
 	path = argv[0]
 	if len(argv) == 2:
-		path = argv[1]
+		name = argv[1]
 
-	print(f"Creating project `{name}`, path: `{path}`")
+	print(f"Creating project at `{path}`")
 
 	subprocess.run(['mkdir', '-p', path], check=True)
 	subprocess.run(['django-admin', 'startproject', name, path], check=True)

@@ -1,13 +1,14 @@
 # Commands for testing
 
-NAME=qqqq
 FOLDER=qqqq
 
 projectenv: project
-	bash -c 'cd ${FOLDER} && virtualenv ./virtualenv && source virtualenv/bin/activate && pip install django django-environ whitenoise'
+	cd ${FOLDER}
+	poetry add django django-environ whitenoise
+	poetry shell
 
 project: clean
-	./spinproject.py ${NAME} ${FOLDER}
+	./django_spinproject/bin/spinproject.py ${FOLDER}
 
 clean:
 	rm -rf ./${FOLDER}
