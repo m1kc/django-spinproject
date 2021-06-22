@@ -104,7 +104,7 @@ deploy_main:
 import shlex
 
 for key in templates:
-	print(f'Writing {name}/{key}...')
-	with open(os.path.join(path, name, key), 'w') as f:
+	print(f'Writing {key}...')
+	with open(os.path.join(path, key), 'w') as f:
 		f.write(templates[key])
 
