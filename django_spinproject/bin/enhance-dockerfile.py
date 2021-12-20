@@ -30,7 +30,7 @@ ENV DJANGO_APP={name}
 
 ENV GUNICORN_CMD_ARGS "-t 600 -w1"
 
-ENV DJANGO_MANAGEMENT_ON_START "collectstatic --noinput"
+ENV DJANGO_MANAGEMENT_ON_START "migrate; collectstatic --noinput"
 
 COPY . /usr/django/app'''
 
