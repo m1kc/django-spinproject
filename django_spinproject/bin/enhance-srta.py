@@ -62,6 +62,7 @@ poetry run python manage.py migrate''',
 set -e
 set -x
 
+export CI=true
 script/test''',
 }
 
