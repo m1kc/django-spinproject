@@ -16,6 +16,7 @@ RUN apt-get update \\
         postgresql-client \\
         mariadb-client \\
         nano \\
+        ruby-foreman \\
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install poetry
