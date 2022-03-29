@@ -11,7 +11,8 @@ name, path = argv
 
 template = f'''FROM alang/django:2.1-python3
 
-RUN apt-get update \\
+# --allow-releaseinfo-change because buster is now oldstable
+RUN apt-get update --allow-releaseinfo-change \\
     && apt-get install -y --no-install-recommends \\
         postgresql-client \\
         mariadb-client \\
