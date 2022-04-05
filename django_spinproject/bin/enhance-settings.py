@@ -207,7 +207,7 @@ DJANGO_DEBUG=True
 DJANGO_DEBUG_SQL=False
 DJANGO_ALLOWED_HOSTS=""
 DJANGO_DATABASE_URL="sqlite:///db.sqlite3"'''
-for filename in ['.env', '.env.example']:
+for filename in ['.env.example']:
 	with open(os.path.join(path, name, filename), 'w') as f:
 		print(f'Writing {filename}...')
 		f.write(template)
