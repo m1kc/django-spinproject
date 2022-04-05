@@ -31,6 +31,20 @@ Generated files will work fine in Django >= 2.0, not tested in earlier versions.
 
 ## Changelog
 
+### v1.3.0: Regular release
+
+* `74d6ff5` Fix Docker build failing because of new Debian release. Closes #12.
+* `ce0255f` Set `CI=true` when running `cibuild`. Closes #15.
+* `3d54ece` Dockerfile: run `migrate` on boot
+* `f9700fd` Allow script/setup to create .env file. Closes #13.
+* `13230bb` Add ruby-foreman to Docker image
+* `180a360` Remove gunicorn options from Dockerfile. Closes #16.
+* `d2bf875` Warn about psycopg2 dependency. Closes #10.
+* `0d05f5e` Ignore *~ files. Closes #11.
+* `3933d52` Use script/setup in CI. Closes #17.
+
+**Full Changelog**: https://github.com/m1kc/django-spinproject/compare/v1.2.1...v1.3.0
+
 ### Jun 21, 2021
 
 * pytest support 'cause you don't want to waste time on setting that up (give it a try: `script/test`);
