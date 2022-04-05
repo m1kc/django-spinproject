@@ -222,6 +222,8 @@ These commands should do the trick:
  poetry add django
  poetry add django-environ whitenoise
  poetry add --dev flake8
+ # Also, if you intend to use PostgreSQL
+ poetry add psycopg2-binary
 
 If you don't use poetry, other package manager will do, too.
 ---""")
