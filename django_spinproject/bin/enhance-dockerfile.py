@@ -30,7 +30,9 @@ RUN poetry install
 ENV DJANGO_SETTINGS_MODULE {name}.settings
 ENV DJANGO_APP={name}
 
-ENV GUNICORN_CMD_ARGS "-t 600 -w1"
+ENV GUNICORN_CMD_ARGS ""
+# If you prefer to set gunicorn options in Dockerfile, it's done like this:
+#ENV GUNICORN_CMD_ARGS "-t 600 -w1"
 
 ENV DJANGO_MANAGEMENT_ON_START "migrate; collectstatic --noinput"
 
