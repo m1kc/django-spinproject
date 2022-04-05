@@ -49,10 +49,7 @@ before_script:
 test:
   stage: check
   script:
-    - "### Install deps"
-    - script/bootstrap
-    - "### Do actual testing"
-    - poetry run ./manage.py migrate
+    - script/setup
     - script/cibuild
 
 deploy_bleeding:
