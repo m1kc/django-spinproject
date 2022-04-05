@@ -10,6 +10,7 @@ name, path = argv
 
 templates = {
 	".gitignore": '''.env
+*~
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/django,python,code,sublimetext,pycharm
