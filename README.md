@@ -43,8 +43,6 @@ Generated files will work fine in Django >= 2.0, not tested in earlier versions.
 * `0d05f5e` Ignore *~ files. Closes #11.
 * `3933d52` Use script/setup in CI. Closes #17.
 
-**Full Changelog**: https://github.com/m1kc/django-spinproject/compare/v1.2.1...v1.3.0
-
 ### Jun 21, 2021
 
 * pytest support 'cause you don't want to waste time on setting that up (give it a try: `script/test`);
