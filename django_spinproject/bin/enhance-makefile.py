@@ -18,11 +18,11 @@ clean:
 
 docker:
 	# TODO: update tag
-	# docker build -t 'docker.mycompany.local:5000/mycompany/lm-dash-backend' .
+	# docker build -t 'docker.mycompany.local:5000/mycompany/myproject' .
 
 dockerpush: docker
 	# TODO: update tag
-	# docker push 'docker.mycompany.local:5000/mycompany/lm-dash-backend'
+	# docker push 'docker.mycompany.local:5000/mycompany/myproject'
 
 deploy: dockerpush
 '''
@@ -30,4 +30,3 @@ deploy: dockerpush
 print('Writing Makefile...')
 with open(os.path.join(path, 'Makefile'), 'w') as f:
 	f.write(template)
-
