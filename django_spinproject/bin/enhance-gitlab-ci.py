@@ -51,6 +51,10 @@ test:
   script:
     - script/setup
     - script/cibuild
+  coverage: '/^TOTAL.+?(\d+\%)$/'
+  artifacts:
+    reports:
+      cobertura: coverage.xml
 
 deploy_bleeding:
   when: manual
