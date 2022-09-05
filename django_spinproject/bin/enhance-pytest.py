@@ -30,7 +30,7 @@ for key in templates:
 
 print(f"""---
 Note: manual installation of additional third-party packages is required.
-This commands should do the trick:
+These commands should do the trick:
 
  poetry add --dev pytest pytest-django pytest-cov
 
