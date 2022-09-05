@@ -10,6 +10,7 @@ Opinionated version of `django-admin startproject` that intends to go further an
 * 🏛️ **Gitlab CI config**: CI is a good thing.
 * ⚕️ **Pre-configured linter** so you can find some common problems automagically.
 * 🏃 **Pre-configured pytest** because you are going to need unit tests one day.
+* 🗃️ **Auto-checks if you forgot to create migrations** whenever you run tests or CI.
 * *️⃣ **.gitignore**: well, you know why.
 
 ## Requirements
