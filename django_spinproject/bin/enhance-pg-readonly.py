@@ -8,8 +8,6 @@ argv = sys.argv[1:]
 assert len(argv) == 2, 'Must provide: name, path'
 name, path = argv
 
-print('WARNING: pg-readonly is currently in beta stage.')
-
 os.mkdir(os.path.join(path, name, 'pg_readonly'))
 
 templates = {
