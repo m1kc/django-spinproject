@@ -63,7 +63,8 @@ set -e
 set -x
 
 make lint
-poetry run pytest''',
+poetry run pytest
+poetry run ./manage.py makemigrations --check --dry-run''',
 
 	"update": '''#!/bin/bash
 set -e
