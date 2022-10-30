@@ -2,8 +2,9 @@
 
 ## Install git version
 
-```
-poetry add 'git+https://github.com/m1kc/notalib.git@master'
+```sh
+pip install --user 'git+https://github.com/m1kc/django-spinproject.git@master'
+# poetry add 'git+https://github.com/m1kc/django-spinproject.git@master'
 ```
 
 ## Publishing a release
