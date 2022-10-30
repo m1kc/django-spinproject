@@ -25,6 +25,12 @@ Generated files will work fine in Django >= 2.0, not tested in earlier versions.
 1. Install the package: `pip install django-spinproject`
 2. `django-spinproject <path>`
 
+## Experimental features
+
+Can be used in an existing project folder. (Experimental stuff, unstable, subject to change, use at your own risk.)
+
+* `--init`: create spinproject.json
+
 ## Planned features
 
 (for requests, create an issue or drop me a line at m1kc@yandex.ru)
