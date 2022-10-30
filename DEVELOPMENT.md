@@ -1,5 +1,11 @@
 # Developer notes
 
+## Install git version
+
+```
+poetry add 'git+https://github.com/m1kc/notalib.git@master'
+```
+
 ## Publishing a release
 
 1. Bump version in pyproject.toml. Create a commit with message `v1.x.x`;
