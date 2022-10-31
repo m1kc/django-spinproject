@@ -2,11 +2,14 @@ from abc import ABC, abstractmethod
 
 
 class Module(ABC):
-	def last_version(self) -> int:
-		return 0
-
+	@classmethod
 	@abstractmethod
-	def upgrade_step(self, current_version: int) -> None: ...
+	def last_version(cls) -> int: ...
 
+	@classmethod
 	@abstractmethod
-	def cleanup(self, current_version: int) -> None: ...
+	def upgrade_step(cls, current_version: int) -> None: ...
+
+	@classmethod
+	@abstractmethod
+	def cleanup(cls, current_version: int) -> None: ...

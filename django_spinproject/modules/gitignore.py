@@ -4,7 +4,6 @@ from ..generic.hash import get_file_hash, get_text_hash
 
 from os import remove as remove_file
 from os.path import exists as file_exists
-from os import getcwd
 
 
 class GitignoreModule(Module):
