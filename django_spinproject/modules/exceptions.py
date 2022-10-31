@@ -1,0 +1,6 @@
+class ProjectModuleError(Exception):
+	...
+
+
+class ProjectModuleUpgradeError(ProjectModuleError):
+	...

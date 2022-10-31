@@ -30,6 +30,9 @@ Generated files will work fine in Django >= 2.0, not tested in earlier versions.
 Can be used in an existing project folder. (Experimental stuff, unstable, subject to change, use at your own risk.)
 
 * `--init`: create spinproject.json
+* `--enable MODULE_NAME`: enable specified module
+* `--disable MODULE_NAME`: disable specified module
+* `--upgrade [MODULE_NAMES...]`: upgrade (specified or all) enabled modules
 
 ## Planned features
 
