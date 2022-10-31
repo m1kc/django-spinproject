@@ -176,4 +176,7 @@ dmypy.json
 
 # Pyre type checker
 
+# PyCharm
+.idea/
+
 # End of https://www.gitignore.io/api/python,django,code

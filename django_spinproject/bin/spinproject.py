@@ -1,66 +1,78 @@
 #!/usr/bin/env python3
 
+from ..project_manager.project_info_manager import ProjectInfoManager
+from ..generic.exit import exit_with_output
+
 import os
 import sys
 import subprocess
-import json
-from copy import deepcopy
 
 
-PROJECT_INFO_FILENAME = 'spinproject.json'
-PROJECT_INFO_TEMPLATE = {
-	'config': {
-		'project_name': '',
-		'main': 'main',
-	},
-	'modules': [],
-	'config_version': 1,
+EXTENDED_ARGUMENTS = {
+	'init': '--init',
+	'enable': '--enable',
+	'disable': '--disable',
+	'upgrade': '--upgrade',
 }
-
-
-def init_project_info() -> None:
-	"""
-	Initializes the project file.
-	"""
-	cur_dir_files = os.listdir()
-	project_check_file = 'manage.py'
-
-	if project_check_file not in cur_dir_files:
-		print('Project not found')
-		print('Make sure that the command is called at the root of the django project')
-		sys.exit(1)
-
-	if PROJECT_INFO_FILENAME in cur_dir_files:
-		print(f'{PROJECT_INFO_FILENAME} file already exists')
-		sys.exit(1)
-
-	project_info = deepcopy(PROJECT_INFO_TEMPLATE)
-	project_info['config']['project_name'] = input('Enter project name: ')
-
-	with open(PROJECT_INFO_FILENAME, mode='w') as file:
-		json.dump(project_info, file, indent=2)
 
 
 def main():
 	argv = sys.argv[1:]
 	if (len(argv) not in [1,2]) or (argv == ['-h']) or (argv == ['--help']):
-		print('Usage:')
-		print('  startproject.py <path>')
-		print('')
-		print('Advanced usage:')
-		print('  startproject.py --init')
-		print('    initialize project info file')
-		print('')
-		print('Settings directory will be called `main`. You can override this')
-		print('by passing 2nd argument (deprecated).')
-		sys.exit(2)
+		exit_with_output(
+			f"""
+Usage:
+  startproject.py <path>
+  
+Advanced usage:
+  startproject.py {EXTENDED_ARGUMENTS['init']}
+    initialize project info file
+    
+  startproject.py {EXTENDED_ARGUMENTS['enable']} MODULE_NAME
+    enable specified module
+  
+  startproject.py {EXTENDED_ARGUMENTS['disable']} MODULE_NAME
+    disable specified module. after disable module files can be removed
+  
+  startproject.py {EXTENDED_ARGUMENTS['upgrade']} [MODULE_NAMES...]
+    upgrade all or specified modules
+    
+Allowed modules:
+  gitignore
+    creates ".gitignore" file 
+    
+Settings directory will be called `main`. You can override this
+by passing 2nd argument (deprecated).
+			""",
+			2,
+		)
 
-	elif '--init' in argv:
+	elif EXTENDED_ARGUMENTS['init'] in argv:
 		if len(argv) != 1:
-			print('The --init option does not support arguments')
-			sys.exit(2)
+			exit_with_output(f"The {EXTENDED_ARGUMENTS['init']} option does not support arguments", 2)
 
-		init_project_info()
+		ProjectInfoManager.init()
+		return
+
+	elif EXTENDED_ARGUMENTS['enable'] in argv:
+		if len(argv) != 2 or argv[0] != EXTENDED_ARGUMENTS['enable']:
+			exit_with_output(f"Incorrect format of '{EXTENDED_ARGUMENTS['enable']} MODULE_NAME' option", 2)
+
+		ProjectInfoManager.enable_module(argv[1])
+		return
+
+	elif EXTENDED_ARGUMENTS['disable'] in argv:
+		if len(argv) != 2 or argv[0] != EXTENDED_ARGUMENTS['disable']:
+			exit_with_output(f"Incorrect format of '{EXTENDED_ARGUMENTS['disable']} MODULE_NAME' option", 2)
+
+		ProjectInfoManager.disable_module(argv[1])
+		return
+
+	elif EXTENDED_ARGUMENTS['upgrade'] in argv:
+		if len(argv) > 1 and argv[0] != EXTENDED_ARGUMENTS['upgrade']:
+			exit_with_output(f"Incorrect format of '{EXTENDED_ARGUMENTS['upgrade']} [MODULE_NAMES...]' option", 2)
+
+		ProjectInfoManager.upgrade_modules(*argv[1:])
 		return
 
 	name = 'main'
