@@ -14,38 +14,37 @@ EXTENDED_ARGUMENTS = {
 	'disable': '--disable',
 	'upgrade': '--upgrade',
 }
+HELP_MESSAGE = f"""
+Usage:
+  startproject.py <path>
+
+Advanced usage:
+  startproject.py {EXTENDED_ARGUMENTS['init']}
+	initialize project info file
+
+  startproject.py {EXTENDED_ARGUMENTS['enable']} MODULE_NAME
+	enable specified module
+
+  startproject.py {EXTENDED_ARGUMENTS['disable']} MODULE_NAME
+	disable specified module. after disable module files can be removed
+
+  startproject.py {EXTENDED_ARGUMENTS['upgrade']} [MODULE_NAMES...]
+	upgrade all or specified modules
+
+Allowed modules:
+  gitignore
+	creates ".gitignore" file 
+
+Settings directory will be called `main`. You can override this
+by passing 2nd argument (deprecated)."""
 
 
 def main():
 	argv = sys.argv[1:]
-	if (len(argv) not in [1,2]) or (argv == ['-h']) or (argv == ['--help']):
-		exit_with_output(
-			f"""
-Usage:
-  startproject.py <path>
-  
-Advanced usage:
-  startproject.py {EXTENDED_ARGUMENTS['init']}
-    initialize project info file
-    
-  startproject.py {EXTENDED_ARGUMENTS['enable']} MODULE_NAME
-    enable specified module
-  
-  startproject.py {EXTENDED_ARGUMENTS['disable']} MODULE_NAME
-    disable specified module. after disable module files can be removed
-  
-  startproject.py {EXTENDED_ARGUMENTS['upgrade']} [MODULE_NAMES...]
-    upgrade all or specified modules
-    
-Allowed modules:
-  gitignore
-    creates ".gitignore" file 
-    
-Settings directory will be called `main`. You can override this
-by passing 2nd argument (deprecated).
-			""",
-			2,
-		)
+
+	if argv == ['-h'] or argv == ['--help']:
+		print(HELP_MESSAGE)
+		return
 
 	elif EXTENDED_ARGUMENTS['init'] in argv:
 		if len(argv) != 1:
@@ -74,6 +73,10 @@ by passing 2nd argument (deprecated).
 
 		ProjectInfoManager.upgrade_modules(*argv[1:])
 		return
+
+	elif len(argv) not in (1, 2):
+		# Some extended arguments can accept an unlimited arguments number but the basic algorithm only works with two
+		exit_with_output(HELP_MESSAGE, 2)
 
 	name = 'main'
 	path = argv[0]
