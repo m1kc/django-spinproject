@@ -1,6 +1,6 @@
 from ._base import Module
-from .exceptions import ProjectModuleUpgradeError
-from ..generic.hash import get_file_hash, get_text_hash
+from ..generic.line_inserting import insert_line
+from ..generic.file_upgrade import upgrade_file_content
 
 from os import remove as remove_file
 from os.path import exists as file_exists
@@ -11,20 +11,11 @@ class GitignoreModule(Module):
 
 	@classmethod
 	def last_version(cls) -> int:
-		return 1
+		return len(cls.get_upgrade_functions())
 
 	@classmethod
 	def upgrade_step(cls, current_version: int) -> None:
-		if current_version == 0:
-			if file_exists(cls.filename):
-				file_hash = cls.get_file_hash()
-				content_hash = get_text_hash(_V1_CONTENT)
-
-				if file_hash != content_hash:
-					raise ProjectModuleUpgradeError('The file already exists with a different content')
-
-			else:
-				cls.write_file_content(_V1_CONTENT)
+		cls.get_upgrade_functions()[current_version]()
 
 	@classmethod
 	def cleanup(cls, current_version: int) -> None:
@@ -32,14 +23,23 @@ class GitignoreModule(Module):
 			remove_file(cls.filename)
 
 	@classmethod
-	def write_file_content(cls, content: str) -> None:
-		with open(cls.filename, mode='w') as file:
-			file.write(content)
+	def get_upgrade_functions(cls):
+		"""
+		Returns tuple lambda functions for upgrade module content.
 
-	@classmethod
-	def get_file_hash(cls) -> str:
-		with open(cls.filename, mode='rb') as file:
-			return get_file_hash(file)
+		Index of function is a number of version of module.
+
+		Notes:
+			The main reason for the existence of the method is the automatic increase of the latest version of module.
+			Also, this approach simplifies the update function in steps.
+
+		TODO:
+			Perhaps there is a way not to recreate the tuple every time.
+		"""
+		return (
+			lambda: upgrade_file_content(cls.filename, [_V1_CONTENT], _V1_CONTENT),
+			lambda: upgrade_file_content(cls.filename, [_V1_CONTENT, _V2_CONTENT], _V2_CONTENT),
+		)
 
 
 _V1_CONTENT = """.env
@@ -400,3 +400,6 @@ bh_unicode_properties.cache
 GitHub.sublime-settings
 
 # End of https://www.toptal.com/developers/gitignore/api/django,python,code,sublimetext,pycharm"""
+
+
+_V2_CONTENT = insert_line(_V1_CONTENT, '.cache/', 1)
