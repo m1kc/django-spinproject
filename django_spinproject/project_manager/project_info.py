@@ -31,6 +31,9 @@ class ProjectConfig:
 		class_object_attrs = ('project_name', 'main')
 		return len(set(other.keys()) & set(class_object_attrs)) == len(class_object_attrs)
 
+	def serialize(self) -> dict:
+		return self.__dict__.copy()
+
 
 class ProjectInfo:
 	"""
@@ -92,14 +95,18 @@ class ProjectInfo:
 			exit_with_output("Unable to save project info. Permission denied", 1)
 
 	def serialize(self) -> dict:
-		serialized_obj = self.__dict__
-		serialized_obj['config'] = serialized_obj['config'].__dict__
+		# A copy is needed because __dict__ returns a dictionary of references to object fields
+		serialized_obj = self.__dict__.copy()
+		serialized_obj['config'] = serialized_obj['config'].serialize()
 		return serialized_obj
 
 	@classmethod
 	def project_objects_hook(cls, jdict: dict) -> Union[dict, ProjectConfig]:
-		if ProjectConfig.is_compatible(jdict):
-			return ProjectConfig(**jdict)
+		config_label = 'config'
+
+		if config_label in jdict:
+			if ProjectConfig.is_compatible(jdict[config_label]):
+				jdict[config_label] = ProjectConfig(**jdict[config_label])
 
 		return jdict
 

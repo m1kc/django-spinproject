@@ -1,6 +1,5 @@
 from .project_info import ProjectInfo
 from ..modules import MODULES
-from ..modules.exceptions import ProjectModuleUpgradeError
 from ..generic.exit import exit_with_output
 
 import os
@@ -136,11 +135,11 @@ class ProjectInfoManager:
 			while current_module_version < module_last_version:
 				try:
 					module.upgrade_step(current_module_version)
-				except ProjectModuleUpgradeError as e:
-					exit_with_output(f"Failed to update the module {module_name}. {e}", 1)
+					current_module_version += 1
+					project_info.migration_state[module_name] = current_module_version
+					project_info.save()
 
-				current_module_version += 1
-				project_info.migration_state[module_name] = current_module_version
-				project_info.save(overwrite=True)
+				except ValueError as e:
+					exit_with_output(f"Failed to update the module {module_name}. {e}", 1)
 
 			print(f"Successfully upgraded {module_name}: {_module_version_before_update} -> {module_last_version}")
