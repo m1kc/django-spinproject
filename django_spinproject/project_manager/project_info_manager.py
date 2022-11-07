@@ -95,7 +95,7 @@ class ProjectInfoManager:
 		project_info = ProjectInfo.load()
 
 		if module_name in project_info.modules:
-			MODULES[module_name].cleanup(project_info.migration_state[module_name])
+			MODULES[module_name].cleanup(project_info.migration_state[module_name], project_info)
 			project_info.modules.remove(module_name)
 			del project_info.migration_state[module_name]
 			project_info.save()
@@ -134,7 +134,7 @@ class ProjectInfoManager:
 
 			while current_module_version < module_last_version:
 				try:
-					module.upgrade_step(current_module_version)
+					module.upgrade_step(current_module_version, project_info)
 					current_module_version += 1
 					project_info.migration_state[module_name] = current_module_version
 					project_info.save()

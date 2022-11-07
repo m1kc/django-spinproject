@@ -1,14 +1,15 @@
-from ._base import Module, ExpectedContentMixin
+from ._base import Module, ExpectedContentMixin, CleaningDirMixin
 from .srta_data import _V1_CONTENT
 from ..generic.file_upgrade import upgrade_files_content
+from ..project_manager.project_info import ProjectInfo
 
 import os
-import shutil
 import shlex
 import subprocess
+from typing import Optional
 
 
-class SRTAModule(Module, ExpectedContentMixin):
+class SRTAModule(Module, ExpectedContentMixin, CleaningDirMixin):
 	contents = (_V1_CONTENT, )
 	files_dir = 'script'
 	symlinks_label = 'symlinks'
@@ -18,7 +19,7 @@ class SRTAModule(Module, ExpectedContentMixin):
 		return len(cls.contents)
 
 	@classmethod
-	def upgrade_step(cls, current_version: int) -> None:
+	def upgrade_step(cls, current_version: int, project_info: Optional[ProjectInfo] = None) -> None:
 		content = cls.contents[current_version]
 		expected_content = cls.get_expected_content(current_version)
 		full_path_to_dir = os.path.join(os.getcwd(), cls.files_dir)
@@ -39,9 +40,9 @@ class SRTAModule(Module, ExpectedContentMixin):
 				print(f"Symlink: {key} -> {content[cls.symlinks_label][key]} already exists")
 
 	@classmethod
-	def cleanup(cls, current_version: int) -> None:
+	def cleanup(cls, current_version: int, project_info: Optional[ProjectInfo] = None) -> None:
 		if current_version > 0:
-			scripts_path = os.path.join(os.getcwd(), cls.files_dir)
-
-			if os.path.exists(scripts_path):
-				shutil.rmtree(scripts_path, ignore_errors=False, onerror=None)
+			content = cls.contents[current_version - 1]
+			template_files = list(content[cls.templates_label].keys())
+			symlinks = list(content[cls.symlinks_label].keys())
+			cls.clean_dir(template_files + symlinks)

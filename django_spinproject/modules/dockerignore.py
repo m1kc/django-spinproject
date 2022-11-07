@@ -1,5 +1,5 @@
 from ._base import Module, ExpectedContentMixin
-from .gitignore_data import _V1_CONTENT, _V2_CONTENT
+from .dockerignore_data import _V1_CONTENT
 from ..generic.file_upgrade import upgrade_files_content
 from ..project_manager.project_info import ProjectInfo
 
@@ -8,10 +8,10 @@ from os.path import exists as file_exists
 from typing import Optional
 
 
-class GitignoreModule(Module, ExpectedContentMixin):
-	filename = '.gitignore'
+class DockerignoreModule(Module, ExpectedContentMixin):
+	filename = '.dockerignore'
 	file_dir = '.'
-	contents = (_V1_CONTENT, _V2_CONTENT)
+	contents = (_V1_CONTENT, )
 
 	@classmethod
 	def last_version(cls) -> int:
