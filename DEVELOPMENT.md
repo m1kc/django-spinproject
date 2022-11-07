@@ -3,7 +3,7 @@
 ## Install git version
 
 ```sh
-pip install --user 'git+https://github.com/m1kc/django-spinproject.git@master'
+pip install --user --upgrade 'git+https://github.com/m1kc/django-spinproject.git@master'
 # poetry add 'git+https://github.com/m1kc/django-spinproject.git@master'
 ```
 
