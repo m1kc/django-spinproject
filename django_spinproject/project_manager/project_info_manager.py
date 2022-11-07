@@ -83,7 +83,7 @@ class ProjectInfoManager:
 			project_info.modules.append(module_name)
 			project_info.migration_state[module_name] = 0
 			project_info.save()
-			print(f"Successfully enabled module: {module_name}")
+			print(ENABLE_MODULE_MESSAGE_TEMPLATE.format(module_name=module_name))
 		else:
 			exit_with_output(f"Module {module_name} already enabled", 1)
 
@@ -95,7 +95,7 @@ class ProjectInfoManager:
 		project_info = ProjectInfo.load()
 
 		if module_name in project_info.modules:
-			MODULES[module_name].cleanup(project_info.migration_state[module_name])
+			MODULES[module_name].cleanup(project_info.migration_state[module_name], project_info)
 			project_info.modules.remove(module_name)
 			del project_info.migration_state[module_name]
 			project_info.save()
@@ -134,7 +134,7 @@ class ProjectInfoManager:
 
 			while current_module_version < module_last_version:
 				try:
-					module.upgrade_step(current_module_version)
+					module.upgrade_step(current_module_version, project_info)
 					current_module_version += 1
 					project_info.migration_state[module_name] = current_module_version
 					project_info.save()
@@ -143,3 +143,10 @@ class ProjectInfoManager:
 					exit_with_output(f"Failed to update the module {module_name}. {e}", 1)
 
 			print(f"Successfully upgraded {module_name}: {_module_version_before_update} -> {module_last_version}")
+
+
+ENABLE_MODULE_MESSAGE_TEMPLATE = """Successfully enabled module: {module_name}
+
+The module was added to config, but migrations
+were not run. Run them with:
+    django-spinproject --upgrade {module_name}"""

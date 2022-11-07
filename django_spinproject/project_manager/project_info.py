@@ -1,8 +1,9 @@
 from ..generic.exit import exit_with_output
+from ..generic.serializable_obj import SerializationTrait
 
 import json
 import os
-from typing import Union
+from typing import Union, Optional
 
 
 DEFAULT_MAIN = 'main'
@@ -15,33 +16,43 @@ class ProjectInfoError(Exception):
 	...
 
 
-class ProjectConfig:
+class ProjectConfig(SerializationTrait):
 	"""
 	Stores the part about the project config.
 	"""
-	def __init__(self, project_name: str, main: str = DEFAULT_MAIN):
+	def __init__(self, project_name: str, main: str = DEFAULT_MAIN, module: Optional[dict] = None):
 		self.project_name = project_name
 		self.main = main
+		self.module = module if module is not None else {}
 
 	@classmethod
 	def is_compatible(cls, other: dict) -> bool:
 		"""
 		Checks by duck typing whether the dictionary matches the class object.
 		"""
-		class_object_attrs = ('project_name', 'main')
+		class_object_attrs = ('project_name', 'main', 'module')
 		return len(set(other.keys()) & set(class_object_attrs)) == len(class_object_attrs)
 
 	def serialize(self) -> dict:
-		return self.__dict__.copy()
+		serialized_obj = super(ProjectConfig, self).serialize()
+
+		for module_name in serialized_obj['module']:
+			module_config = serialized_obj['module'][module_name]
+
+			if isinstance(module_config, SerializationTrait):
+				serialized_obj['module'][module_name] = module_config.serialize()
+
+		return serialized_obj
 
 
-class ProjectInfo:
+class ProjectInfo(SerializationTrait):
 	"""
 	Stores all information about the project.
 
 	Allows to dump data to disk and load from it.
 	"""
 	FILENAME = 'spinproject.json'		# Changing the filename in production will lead to errors
+	CONFIG_LABEL = 'config'
 
 	def __init__(self, project_name: str, main: str = DEFAULT_MAIN):
 		self.config = ProjectConfig(project_name, main)
@@ -94,19 +105,11 @@ class ProjectInfo:
 		except PermissionError:
 			exit_with_output("Unable to save project info. Permission denied", 1)
 
-	def serialize(self) -> dict:
-		# A copy is needed because __dict__ returns a dictionary of references to object fields
-		serialized_obj = self.__dict__.copy()
-		serialized_obj['config'] = serialized_obj['config'].serialize()
-		return serialized_obj
-
 	@classmethod
 	def project_objects_hook(cls, jdict: dict) -> Union[dict, ProjectConfig]:
-		config_label = 'config'
-
-		if config_label in jdict:
-			if ProjectConfig.is_compatible(jdict[config_label]):
-				jdict[config_label] = ProjectConfig(**jdict[config_label])
+		if cls.CONFIG_LABEL in jdict:
+			if ProjectConfig.is_compatible(jdict[cls.CONFIG_LABEL]):
+				jdict[cls.CONFIG_LABEL] = ProjectConfig(**jdict[cls.CONFIG_LABEL])
 
 		return jdict
 

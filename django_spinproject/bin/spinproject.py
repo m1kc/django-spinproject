@@ -2,6 +2,7 @@
 
 from ..project_manager.project_info_manager import ProjectInfoManager
 from ..generic.exit import exit_with_output
+from ..modules import MODULES
 
 import os
 import sys
@@ -14,6 +15,7 @@ EXTENDED_ARGUMENTS = {
 	'disable': '--disable',
 	'upgrade': '--upgrade',
 }
+MODULES_HELP = '  ' + '\n  '.join(map(lambda x: x + '\n    ' + MODULES[x].help_text, MODULES))
 HELP_MESSAGE = f"""
 Usage:
   startproject.py <path>
@@ -32,8 +34,7 @@ Advanced usage:
 	upgrade all or specified modules
 
 Allowed modules:
-  gitignore
-	creates ".gitignore" file 
+{MODULES_HELP}
 
 Settings directory will be called `main`. You can override this
 by passing 2nd argument (deprecated)."""
