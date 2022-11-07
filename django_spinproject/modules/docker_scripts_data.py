@@ -4,13 +4,13 @@ _V1_CONTENT = {
 set -e
 set -x
 
-docker build -t '{repository_domain}:{port}/{company_name}/{image_name}' .
+docker build -t '{repository}{image}:{tag}' .
 """,
 		'x-dockerpush': """#!/bin/bash
 set -e
 set -x
 
-docker push '{repository_domain}:{port}/{company_name}/{image_name}'
+docker push '{repository}{image}:{tag}'
 """,
 	}
 }

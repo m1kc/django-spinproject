@@ -9,6 +9,8 @@ from typing import Optional
 
 
 class DockerignoreModule(Module, ExpectedContentMixin):
+	name = 'dockerignore'
+	help_text = "Creates .dockerignore file"
 	filename = '.dockerignore'
 	file_dir = '.'
 	contents = (_V1_CONTENT, )

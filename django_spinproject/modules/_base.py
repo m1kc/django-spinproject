@@ -7,6 +7,8 @@ from typing import Iterable
 
 
 class Module(ABC):
+	name = ''
+	help_text = ""
 	contents = ()
 
 	@classmethod

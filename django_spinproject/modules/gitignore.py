@@ -9,6 +9,8 @@ from typing import Optional
 
 
 class GitignoreModule(Module, ExpectedContentMixin):
+	name = 'gitignore'
+	help_text = "Creates .gitignore file"
 	filename = '.gitignore'
 	file_dir = '.'
 	contents = (_V1_CONTENT, _V2_CONTENT)

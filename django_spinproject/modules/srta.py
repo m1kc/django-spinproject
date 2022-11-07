@@ -10,6 +10,8 @@ from typing import Optional
 
 
 class SRTAModule(Module, ExpectedContentMixin, CleaningDirMixin):
+	name = 'srta'
+	help_text = "Creates srta scripts and additional symlinks"
 	contents = (_V1_CONTENT, )
 	files_dir = 'script'
 	symlinks_label = 'symlinks'

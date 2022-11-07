@@ -4,13 +4,15 @@ from .pytest import PytestModule
 from .dockerfile import DockerfileModule
 from .dockerignore import DockerignoreModule
 from .docker_scripts import DockerScriptsModule
+from .gitlab_ci import GitlabCIModule
 
 
 MODULES = {
-	'gitignore': GitignoreModule,
-	'srta': SRTAModule,
-	'pytest': PytestModule,
-	'dockerfile': DockerfileModule,
-	'dockerignore': DockerignoreModule,
-	'docker_scripts': DockerScriptsModule,
+	GitignoreModule.name: GitignoreModule,
+	SRTAModule.name: SRTAModule,
+	PytestModule.name: PytestModule,
+	DockerfileModule.name: DockerfileModule,
+	DockerignoreModule.name: DockerignoreModule,
+	DockerScriptsModule.name: DockerScriptsModule,
+	GitlabCIModule.name: GitlabCIModule,
 }

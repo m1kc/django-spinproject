@@ -9,6 +9,8 @@ from typing import Optional
 
 
 class DockerfileModule(Module, ExpectedContentMixin):
+	name = 'dockerfile'
+	help_text = "Creates Dockerfile"
 	filename = 'Dockerfile'
 	file_dir = '.'
 	contents = (_V1_CONTENT, )

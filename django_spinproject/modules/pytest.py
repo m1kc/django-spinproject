@@ -8,6 +8,8 @@ from typing import Optional
 
 
 class PytestModule(Module, ExpectedContentMixin):
+	name = 'pytest'
+	help_text = "Creates pytest.ini and .coveragerc files"
 	contents = (_V1_CONTENT, )
 	files_dir = '.'
 

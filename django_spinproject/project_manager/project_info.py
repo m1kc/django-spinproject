@@ -3,7 +3,7 @@ from ..generic.serializable_obj import SerializationTrait
 
 import json
 import os
-from typing import Union
+from typing import Union, Optional
 
 
 DEFAULT_MAIN = 'main'
@@ -20,20 +20,29 @@ class ProjectConfig(SerializationTrait):
 	"""
 	Stores the part about the project config.
 	"""
-	def __init__(self, project_name: str, main: str = DEFAULT_MAIN, **kwargs):
+	def __init__(self, project_name: str, main: str = DEFAULT_MAIN, module: Optional[dict] = None):
 		self.project_name = project_name
 		self.main = main
-
-		for attr_name, attr_value in kwargs.items():
-			setattr(self, attr_name, attr_value)
+		self.module = module if module is not None else {}
 
 	@classmethod
 	def is_compatible(cls, other: dict) -> bool:
 		"""
 		Checks by duck typing whether the dictionary matches the class object.
 		"""
-		class_object_attrs = ('project_name', 'main')
+		class_object_attrs = ('project_name', 'main', 'module')
 		return len(set(other.keys()) & set(class_object_attrs)) == len(class_object_attrs)
+
+	def serialize(self) -> dict:
+		serialized_obj = super(ProjectConfig, self).serialize()
+
+		for module_name in serialized_obj['module']:
+			module_config = serialized_obj['module'][module_name]
+
+			if isinstance(module_config, SerializationTrait):
+				serialized_obj['module'][module_name] = module_config.serialize()
+
+		return serialized_obj
 
 
 class ProjectInfo(SerializationTrait):
