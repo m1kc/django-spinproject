@@ -55,7 +55,7 @@ deploy_bleeding:
     - docker info
   script:
     - echo 'TODO: change registry address and image name' && exit 1
-    - echo $DOCKER_PASSWORD | docker login --username user --password-stdin {login_repository}
+    - echo $DOCKER_PASSWORD | docker login --username {username} --password-stdin {login_repository}
     - docker build -t '{image_repository}{image}:bleeding' .
     - docker push '{image_repository}{image}:bleeding'
 
@@ -67,7 +67,7 @@ deploy_main:
     - docker info
   script:
     - echo 'TODO: change registry address and image name' && exit 1
-    - echo $DOCKER_PASSWORD | docker login --username user --password-stdin {login_repository}
+    - echo $DOCKER_PASSWORD | docker login --username {username} --password-stdin {login_repository}
     - docker build -t '{image_repository}{image}' .
     - docker push '{image_repository}{image}'
 

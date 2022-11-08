@@ -1,15 +1,14 @@
 from ._base import Module, ExpectedContentMixin, CleaningDirMixin
-from ._docker import DockerConfig, DockerConfigMixin, SUBSCRIBED_MODULES
 from .docker_scripts_data import _V1_CONTENT
 from ..generic.file_upgrade import upgrade_files_content
-from ..project_manager.project_info import ProjectInfo
+from ..project_manager.project_info import ProjectInfo, DockerConfig
 
 import os
 import shlex
 import subprocess
 
 
-class DockerScriptsModule(Module, ExpectedContentMixin, CleaningDirMixin, DockerConfigMixin):
+class DockerScriptsModule(Module, ExpectedContentMixin, CleaningDirMixin):
 	name = 'docker-scripts'
 	help_text = "Creates scripts for building and pushing docker image"
 	contents = (_V1_CONTENT,)
@@ -21,7 +20,7 @@ class DockerScriptsModule(Module, ExpectedContentMixin, CleaningDirMixin, Docker
 
 	@classmethod
 	def upgrade_step(cls, current_version: int, project_info: ProjectInfo) -> None:
-		docker_config = cls.create_docker_config(project_info)
+		docker_config = project_info.config.docker
 		content = cls.contents[current_version]
 		expected_content = cls.get_expected_content(current_version)
 		full_path_to_dir = os.path.join(os.getcwd(), cls.files_dir)
@@ -44,8 +43,6 @@ class DockerScriptsModule(Module, ExpectedContentMixin, CleaningDirMixin, Docker
 		if current_version > 0:
 			cls.clean_dir(cls.contents[current_version - 1][cls.templates_label])
 
-		cls.remove_docker_config(project_info)
-
 	@staticmethod
 	def format_template(template: str, config: DockerConfig):
 		"""
@@ -56,6 +53,3 @@ class DockerScriptsModule(Module, ExpectedContentMixin, CleaningDirMixin, Docker
 		args_to_fill['repository'] = repository + '/' if repository else ''
 
 		return template.format(**args_to_fill)
-
-
-SUBSCRIBED_MODULES.append(DockerScriptsModule.name)

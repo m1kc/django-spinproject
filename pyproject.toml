@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "django-spinproject"
-version = "1.5.5"
+version = "1.5.6"
 description = "Opinionated version of `startproject` with some popular third-party packages. Starter pack includes: whitenoise, django-environ, logging, GitHub Scripts to Rule Them All, basic Dockerfile and Makefile."
 authors = ["m1kc (Max Musatov) <m1kc@yandex.ru>"]
 license = "MIT"
