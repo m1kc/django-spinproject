@@ -1,5 +1,6 @@
 from ..generic.exit import exit_with_output
 from ..generic.serializable_obj import SerializationTrait
+from ..generic.compatibility_trait import CompatibilityTrait
 
 import json
 import os
@@ -16,22 +17,39 @@ class ProjectInfoError(Exception):
 	...
 
 
-class ProjectConfig(SerializationTrait):
+class DockerConfig(SerializationTrait, CompatibilityTrait):
+	class_obj_attrs = 'repository', 'image', 'tag', 'username'
+
+	def __init__(
+		self,
+		repository: str = '',		# docker.mycompany.local:5000
+		image: str = 'myimage',		# mycompany/myimage
+		tag: str = 'latest',
+		username: str = 'user',
+	):
+		self.repository = repository
+		self.image = image
+		self.tag = tag
+		self.username = username
+
+
+class ProjectConfig(SerializationTrait, CompatibilityTrait):
 	"""
 	Stores the part about the project config.
 	"""
-	def __init__(self, project_name: str, main: str = DEFAULT_MAIN, module: Optional[dict] = None):
+	class_obj_attrs = 'project_name', 'main', 'module', 'docker'
+
+	def __init__(
+		self,
+		project_name: str,
+		main: str = DEFAULT_MAIN,
+		module: Optional[dict] = None,
+		docker: DockerConfig = DockerConfig(),
+	):
 		self.project_name = project_name
 		self.main = main
 		self.module = module if module is not None else {}
-
-	@classmethod
-	def is_compatible(cls, other: dict) -> bool:
-		"""
-		Checks by duck typing whether the dictionary matches the class object.
-		"""
-		class_object_attrs = ('project_name', 'main', 'module')
-		return len(set(other.keys()) & set(class_object_attrs)) == len(class_object_attrs)
+		self.docker = docker
 
 	def serialize(self) -> dict:
 		serialized_obj = super(ProjectConfig, self).serialize()
@@ -53,6 +71,7 @@ class ProjectInfo(SerializationTrait):
 	"""
 	FILENAME = 'spinproject.json'		# Changing the filename in production will lead to errors
 	CONFIG_LABEL = 'config'
+	DOCKER_LABEL = 'docker'
 
 	def __init__(self, project_name: str, main: str = DEFAULT_MAIN):
 		self.config = ProjectConfig(project_name, main)
@@ -107,9 +126,12 @@ class ProjectInfo(SerializationTrait):
 
 	@classmethod
 	def project_objects_hook(cls, jdict: dict) -> Union[dict, ProjectConfig]:
-		if cls.CONFIG_LABEL in jdict:
-			if ProjectConfig.is_compatible(jdict[cls.CONFIG_LABEL]):
-				jdict[cls.CONFIG_LABEL] = ProjectConfig(**jdict[cls.CONFIG_LABEL])
+		configs = [(cls.CONFIG_LABEL, ProjectConfig), (cls.DOCKER_LABEL, DockerConfig)]
+
+		for label, ConfigClass in configs:
+			if label in jdict:
+				if ConfigClass.is_compatible(jdict[label]):
+					jdict[label] = ConfigClass(**jdict[label])
 
 		return jdict
 
