@@ -15,7 +15,7 @@ EXTENDED_ARGUMENTS = {
 	'disable': '--disable',
 	'upgrade': '--upgrade',
 }
-MODULES_HELP = '  ' + '\n  '.join(map(lambda x: x + '\n    ' + MODULES[x].help_text, MODULES))
+MODULES_HELP = '  ' + '\n  '.join(map(lambda x: x + '\n    ' + MODULES[x].help_text.replace('\n', '\n    '), MODULES))
 HELP_MESSAGE = f"""
 Usage:
   startproject.py <path>

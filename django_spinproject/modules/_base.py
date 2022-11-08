@@ -51,8 +51,8 @@ class CleaningDirMixin:
 	files_dir: str
 
 	@classmethod
-	def clean_dir(cls, files_to_remove: Iterable[str]) -> None:
-		files_path = os.path.join(os.getcwd(), cls.files_dir)
+	def clean_dir(cls, files_to_remove: Iterable[str], files_dir: str = '') -> None:
+		files_path = os.path.join(os.getcwd(), cls.files_dir if not files_dir else files_dir)
 
 		for filename in files_to_remove:
 			file_path = os.path.join(files_path, filename)
