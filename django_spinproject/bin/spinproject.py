@@ -2,111 +2,49 @@
 
 from ..project_manager.project_info_manager import ProjectInfoManager
 from ..generic.exit import exit_with_output
+from ..cli import create_argparser
 from ..modules import MODULES
+from ..constants import DEFAULT_MAIN
 
 import os
-import sys
 import subprocess
 
 
-EXTENDED_ARGUMENTS = {
-	'init': '--init',
-	'enable': '--enable',
-	'disable': '--disable',
-	'upgrade': '--upgrade',
-}
-MODULES_HELP = '  ' + '\n  '.join(map(lambda x: x + '\n    ' + MODULES[x].help_text.replace('\n', '\n    '), MODULES))
-HELP_MESSAGE = f"""
-Usage:
-  startproject.py <path>
-
-Advanced usage:
-  startproject.py {EXTENDED_ARGUMENTS['init']}
-	initialize project info file
-
-  startproject.py {EXTENDED_ARGUMENTS['enable']} MODULE_NAME
-	enable specified module
-
-  startproject.py {EXTENDED_ARGUMENTS['disable']} MODULE_NAME
-	disable specified module. after disable module files can be removed
-
-  startproject.py {EXTENDED_ARGUMENTS['upgrade']} [MODULE_NAMES...]
-	upgrade all or specified modules
-
-Allowed modules:
-{MODULES_HELP}
-
-Settings directory will be called `main`. You can override this
-by passing 2nd argument (deprecated)."""
-
-
 def main():
-	argv = sys.argv[1:]
+	argparser = create_argparser()
+	args = argparser.parse_args()
 
-	if argv == ['-h'] or argv == ['--help']:
-		print(HELP_MESSAGE)
-		return
+	if args.directory is not None:
+		exit_with_output("""This is an deprecated project creation format available in version < 2.
+Please use the new format:
+  django-spinproject --create <path_to_project> [project_main_dir]""")
 
-	elif EXTENDED_ARGUMENTS['init'] in argv:
-		if len(argv) != 1:
-			exit_with_output(f"The {EXTENDED_ARGUMENTS['init']} option does not support arguments", 2)
+	elif args.project_creation_data is not None:
+		path = args.project_creation_data[0]
+		name = DEFAULT_MAIN
 
+		subprocess.run(['mkdir', '-p', path], check=True)
+		subprocess.run(['django-admin', 'startproject', name, path], check=True)
+		os.chdir(path)
 		ProjectInfoManager.init()
-		return
 
-	elif EXTENDED_ARGUMENTS['enable'] in argv:
-		if len(argv) != 2 or argv[0] != EXTENDED_ARGUMENTS['enable']:
-			exit_with_output(f"Incorrect format of '{EXTENDED_ARGUMENTS['enable']} MODULE_NAME' option", 2)
+	elif args.init_project_info:
+		ProjectInfoManager.init()
 
-		ProjectInfoManager.enable_module(argv[1])
-		return
+	elif args.modules_to_enable is not None:
+		if args.modules_to_enable[0] == 'all':
+			modules_to_enable = list(MODULES.keys())
+		else:
+			modules_to_enable = args.modules_to_enable
 
-	elif EXTENDED_ARGUMENTS['disable'] in argv:
-		if len(argv) != 2 or argv[0] != EXTENDED_ARGUMENTS['disable']:
-			exit_with_output(f"Incorrect format of '{EXTENDED_ARGUMENTS['disable']} MODULE_NAME' option", 2)
+		for module_name in modules_to_enable:
+			ProjectInfoManager.enable_module(module_name)
 
-		ProjectInfoManager.disable_module(argv[1])
-		return
+	elif args.module_to_disable is not None:
+		ProjectInfoManager.disable_module(args.module_to_disable[0])
 
-	elif EXTENDED_ARGUMENTS['upgrade'] in argv:
-		if len(argv) > 1 and argv[0] != EXTENDED_ARGUMENTS['upgrade']:
-			exit_with_output(f"Incorrect format of '{EXTENDED_ARGUMENTS['upgrade']} [MODULE_NAMES...]' option", 2)
-
-		ProjectInfoManager.upgrade_modules(*argv[1:])
-		return
-
-	elif len(argv) not in (1, 2):
-		# Some extended arguments can accept an unlimited arguments number but the basic algorithm only works with two
-		exit_with_output(HELP_MESSAGE, 2)
-
-	name = 'main'
-	path = argv[0]
-	if len(argv) == 2:
-		name = argv[1]
-
-	print(f"Creating project at `{path}`")
-
-	subprocess.run(['mkdir', '-p', path], check=True)
-	subprocess.run(['django-admin', 'startproject', name, path], check=True)
-
-	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-
-	active_modules = [
-		'srta',
-		'dockerfile',
-		'makefile',
-		'settings',
-		# 'pytest',
-		'gitignore',
-		'dockerignore',
-		'pg-readonly',
-		'gitlab-ci',
-		'pytest',
-	]
-
-	for m in active_modules:
-		subprocess.run([os.path.join(BASE_DIR, f'enhance-{m}.py'), name, path], check=True)
+	elif args.modules_to_upgrade is not None:
+		ProjectInfoManager.upgrade_modules(*args.modules_to_upgrade)
 
 
 if __name__ == '__main__':

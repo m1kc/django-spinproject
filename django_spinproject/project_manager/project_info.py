@@ -1,13 +1,11 @@
 from ..generic.exit import exit_with_output
 from ..generic.serializable_obj import SerializationTrait
 from ..generic.compatibility_trait import CompatibilityTrait
+from ..constants import DEFAULT_MAIN
 
 import json
 import os
 from typing import Union, Optional
-
-
-DEFAULT_MAIN = 'main'
 
 
 class ProjectInfoError(Exception):
