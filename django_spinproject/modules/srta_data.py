@@ -51,9 +51,34 @@ poetry run python manage.py migrate''',
 set -e
 set -x
 
-make lint
-poetry run pytest
-poetry run ./manage.py makemigrations --check --dry-run''',
+
+lint() {
+	poetry run flake8 --select=C,F,E101,E112,E502,E72,E73,E74,E9,W291,W6 --exclude=.cache,migrations
+}
+
+
+case $# in 
+	0)
+		lint
+		poetry run pytest
+		poetry run ./manage.py makemigrations --check --dry-run
+		;;
+	1)
+		case $1 in 
+			'--lint')
+				lint
+				;;
+			*)
+				printf 'Incorrect arg: %s\n' $1 >&2
+				exit 2
+				;;
+		esac
+		;;
+	*)
+		echo 'Incorrect count of args' >&2
+		exit 2
+		;;
+esac''',
 
 		'update': '''#!/bin/bash
 set -e
@@ -68,6 +93,13 @@ set -x
 
 export CI=true
 script/test''',
+
+		'x-clean': '''#!/bin/bash
+set -e
+set -x
+
+find -depth -name '__pycache__' -exec rm -rfv '{}' ';'
+'''
 	},
 	'symlinks': {
 		'shell': 'console',
