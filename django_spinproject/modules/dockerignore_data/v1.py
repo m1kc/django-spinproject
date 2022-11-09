@@ -1,6 +1,5 @@
-_V1_CONTENT = {
-	'templates': {
-		'.dockerignore': '''**/__pycache__
+_CONTENT = {
+	'.dockerignore': '''**/__pycache__
 **/.classpath
 **/.dockerignore
 **/.env
@@ -23,5 +22,4 @@ _V1_CONTENT = {
 **/obj
 **/secrets.dev.yaml
 **/values.dev.yaml'''
-	}
 }

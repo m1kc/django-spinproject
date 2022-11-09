@@ -1,47 +1,39 @@
-from ._base import Module, ExpectedContentMixin
-from .settings_data import _V1_CONTENT
-from ..generic.file_upgrade import upgrade_files_content
+from ._base import BaseModule
+from .settings_data import _V1_ENV
+from ..generic.directory_cleaning import clean_dir
 from ..project_manager.project_info import ProjectInfo
 
 import os
 
 
-class SettingsModule(Module, ExpectedContentMixin):
+class SettingsModule(BaseModule):
 	name = 'settings'
 	help_text = """Improves settings.py file and creates .env.example file
   Creates backup of settings.py file. If the backup exists, module does not update it.
 """
-	files_dir = '.'
-	contents = (_V1_CONTENT, )
+	environments = (_V1_ENV, )
 	settings_filename = 'settings.py'
 	settings_backup_postfix = '.orig'
 
 	@classmethod
-	def last_version(cls) -> int:
-		return len(cls.contents)
-
-	@classmethod
-	def upgrade_step(cls, current_version: int, project_info: ProjectInfo) -> None:
-		name = project_info.config.main
-		content = cls.contents[current_version]
-		expected_content = cls.get_expected_content(current_version)
+	def _before_upgrade(cls, current_version: int, project_info: ProjectInfo) -> None:
 		full_files_dir = cls.get_full_files_dir(project_info)
 
-		for filename in content[cls.templates_label]:
-			content[cls.templates_label][filename] = content[cls.templates_label][filename].format(name=name)
-
-		for filename in expected_content:
-			expected_content[filename] = tuple(i.format(name=name) for i in expected_content[filename])
-
 		if current_version == 0:
+			# creating backup of settings file
 			settings_orig_path = os.path.join(full_files_dir, cls.settings_filename)
 			settings_backup_path = settings_orig_path + cls.settings_backup_postfix
 
 			if os.path.exists(settings_orig_path) and not os.path.exists(settings_backup_path):
 				os.replace(settings_orig_path, settings_backup_path)
 
-		upgrade_files_content(full_files_dir, expected_content, content[cls.templates_label])
+	@classmethod
+	def _upgrade_step(cls, current_version: int, project_info: ProjectInfo, **render_kwargs) -> None:
+		render_kwargs['name'] = project_info.config.main
+		super()._upgrade_step(current_version, project_info, **render_kwargs)
 
+	@classmethod
+	def _after_upgrade(cls, current_version: int, project_info: ProjectInfo) -> None:
 		if current_version == 0:
 			print(f"""---
 Note: manual installation of third-party packages is required.
@@ -62,13 +54,13 @@ If you don't use poetry, other package manager will do, too.
 	def cleanup(cls, current_version: int, project_info: ProjectInfo) -> None:
 		if current_version > 0:
 			full_files_dir = cls.get_full_files_dir(project_info)
+			clean_dir(
+				cls.environments[current_version - 1].list_templates(),
+				cls.get_full_files_dir(project_info),
+				False,
+			)
 
-			for filename in cls.contents[current_version - 1][cls.templates_label]:
-				file_path = os.path.join(full_files_dir, filename)
-
-				if os.path.exists(file_path):
-					os.remove(file_path)
-
+			# restoring settings backup
 			settings_backup_path = os.path.join(full_files_dir, cls.settings_filename + cls.settings_backup_postfix)
 
 			if os.path.exists(settings_backup_path):
