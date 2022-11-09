@@ -42,6 +42,22 @@ class SettingsModule(Module, ExpectedContentMixin):
 
 		upgrade_files_content(full_files_dir, expected_content, content[cls.templates_label])
 
+		if current_version == 0:
+			print(f"""---
+Note: manual installation of third-party packages is required.
+These commands should do the trick:
+
+ cd "{os.getcwd()}"
+ poetry init
+ poetry add django
+ poetry add django-environ whitenoise
+ poetry add --dev flake8
+ # Also, if you intend to use PostgreSQL
+ poetry add psycopg2-binary
+
+If you don't use poetry, other package manager will do, too.
+---""")
+
 	@classmethod
 	def cleanup(cls, current_version: int, project_info: ProjectInfo) -> None:
 		if current_version > 0:
