@@ -23,16 +23,18 @@ Generated files will work fine in Django >= 2.0, not tested in earlier versions.
 ## How to use
 
 1. Install the package: `pip install django-spinproject`
-2. `django-spinproject <path>`
+2. ~~`django-spinproject <path>`~~ (deprecated)
+3. `django-spinproject --create <path>`
 
 ## Experimental features
 
 Can be used in an existing project folder. (Experimental stuff, unstable, subject to change, use at your own risk.)
 
-* `--init`: create spinproject.json
-* `--enable MODULE_NAME`: enable specified module
-* `--disable MODULE_NAME`: disable specified module
-* `--upgrade [MODULE_NAMES...]`: upgrade (specified or all) enabled modules
+* `--create PATH`: create django project in specified path 
+* `--init`: create spinproject.json file
+* `--enable MODULE_TO_ENABLE [MODULE_TO_ENABLE ...]`: enable specified module(s). use 'all' to enable all modules
+* `--disable MODULE_TO_DISABLE`: disable specified module
+* `--upgrade [MODULE_TO_UPGRADE [MODULE_TO_UPGRADE ...]]`: upgrade (specified or all) enabled modules
 
 ## Planned features
 
