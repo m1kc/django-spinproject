@@ -1,9 +1,10 @@
 from ..generic.dicts_merging import merge_dicts
 from ..project_manager.project_info import ProjectInfo
+from ..generic.extended_jinja_environment import ExtendedEnvironment
 
 import os
 from abc import ABC, abstractmethod
-from typing import Iterable
+from typing import Iterable, Sequence
 
 
 class Module(ABC):
@@ -38,6 +39,21 @@ class ExpectedContentMixin:
 		return merge_dicts(
 			cls.contents[current_version - 1][cls.templates_label],
 			content[cls.templates_label],
+		)
+
+
+class JinjaExpectedContentMixin:
+	environments: Sequence[ExtendedEnvironment] = ()
+
+	@classmethod
+	def get_expected_content(cls, current_version: int, templates_as_strings: bool = False) -> dict:
+		if current_version == 0:
+			templates_dict = cls.environments[current_version].get_templates_dict(templates_as_strings)
+			return {filename: (template, ) for filename, template in templates_dict.items()}
+
+		return merge_dicts(
+			cls.environments[current_version - 1].get_templates_dict(templates_as_strings),
+			cls.environments[current_version].get_templates_dict(templates_as_strings),
 		)
 
 
