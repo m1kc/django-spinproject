@@ -33,24 +33,6 @@ class SettingsModule(BaseModule):
 		super()._upgrade_step(current_version, project_info, **render_kwargs)
 
 	@classmethod
-	def _after_upgrade(cls, current_version: int, project_info: ProjectInfo) -> None:
-		if current_version == 0:
-			print(f"""---
-Note: manual installation of third-party packages is required.
-These commands should do the trick:
-
- cd "{os.getcwd()}"
- poetry init
- poetry add django
- poetry add django-environ whitenoise
- poetry add --dev flake8
- # Also, if you intend to use PostgreSQL
- poetry add psycopg2-binary
-
-If you don't use poetry, other package manager will do, too.
----""")
-
-	@classmethod
 	def cleanup(cls, current_version: int, project_info: ProjectInfo) -> None:
 		if current_version > 0:
 			full_files_dir = cls.get_full_files_dir(project_info)

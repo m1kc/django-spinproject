@@ -71,6 +71,23 @@ class ProjectInfoManager:
 		"""
 		project_info = ProjectInfo(project_name=ask_project_name())
 		project_info.save(overwrite=False)
+		print("""Note: third-party packages are required for some modules.
+These commands should do the trick:
+
+ poetry init
+ # For Django itself
+ poetry add django
+ # For its PostgreSQL adapter
+ poetry add psycopg2-binary
+ # For settings module
+ poetry add django-environ whitenoise
+ # For linter script
+ poetry add --dev flake8
+ # For pytest
+ poetry add --dev pytest pytest-django pytest-cov
+
+If you don't use poetry, other package manager will do, too.
+""")
 
 	@classmethod
 	@check_django_project_existence
