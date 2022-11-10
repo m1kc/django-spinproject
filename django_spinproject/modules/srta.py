@@ -32,6 +32,11 @@ class SRTAModule(BaseModule, ChmodMixin):
 				print(f"Symlink: {link_name} -> {scripts_name} already exists")
 
 	@classmethod
+	def _upgrade_step(cls, current_version: int, project_info: ProjectInfo, **render_kwargs) -> None:
+		render_kwargs['name'] = project_info.config.main
+		super()._upgrade_step(current_version, project_info, **render_kwargs)
+
+	@classmethod
 	def cleanup(cls, current_version: int, project_info: Optional[ProjectInfo] = None) -> None:
 		if current_version > 0:
 			files = cls.environments[current_version - 1].list_templates()

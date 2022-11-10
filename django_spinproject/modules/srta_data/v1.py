@@ -28,7 +28,7 @@ set -x
 script/bootstrap
 
 # Create .env if not present
-MAIN_FOLDER=main
+MAIN_FOLDER={{ name }}
 if [ ! -e $MAIN_FOLDER/.env ]; then
 	# Copy template
 	cp $MAIN_FOLDER/.env.example $MAIN_FOLDER/.env
