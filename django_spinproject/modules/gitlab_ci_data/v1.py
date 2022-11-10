@@ -1,6 +1,5 @@
-_V1_CONTENT = {
-	'templates': {
-		'.gitlab-ci.yml': '''stages:
+_CONTENT = {
+	'.gitlab-ci.yml': '''stages:
 - check
 - deploy
 
@@ -55,9 +54,9 @@ deploy_bleeding:
     - docker info
   script:
     - echo 'TODO: change registry address and image name' && exit 1
-    - echo $DOCKER_PASSWORD | docker login --username {username} --password-stdin {login_repository}
-    - docker build -t '{image_repository}{image}:bleeding' .
-    - docker push '{image_repository}{image}:bleeding'
+    - echo $DOCKER_PASSWORD | docker login --username {{ username }} --password-stdin {% if repository %}{{ repository }}{% endif %}
+    - docker build -t '{{ repository }}{% if repository %}/{% endif %}{{ image }}:bleeding' .
+    - docker push '{{ repository }}{% if repository %}/{% endif %}{{ image }}:bleeding'
 
 deploy_main:
   when: manual
@@ -67,17 +66,17 @@ deploy_main:
     - docker info
   script:
     - echo 'TODO: change registry address and image name' && exit 1
-    - echo $DOCKER_PASSWORD | docker login --username {username} --password-stdin {login_repository}
-    - docker build -t '{image_repository}{image}' .
-    - docker push '{image_repository}{image}'
+    - echo $DOCKER_PASSWORD | docker login --username {{ username }} --password-stdin {{ login_repository }}
+    - docker build -t '{{ repository }}{% if repository %}/{% endif %}{{ image }}' .
+    - docker push '{{ repository }}{% if repository %}/{% endif %}{{ image }}'
 
 # ISSUE: nobody can guarantee that image did not change between deploy_bleeding and deploy_promote. Use at your own risk.
 # deploy_promote:
 #   when: manual
 #   stage: deploy
 #   script:
-#     - docker tag '{image_repository}{image}:bleeding' '{image_repository}{image}'
-#     - docker push '{image_repository}{image}'
+#     - docker tag '{{ repository }}{% if repository %}/{% endif %}{{ image }}:bleeding' '{{ repository }}{% if repository %}/{% endif %}{{ image }}'
+#     - docker push '{{ repository }}{% if repository %}/{% endif %}{{ image }}'
 
 
 # pages:
@@ -91,5 +90,4 @@ deploy_main:
 #   only:
 #     - master
 '''
-	}
 }

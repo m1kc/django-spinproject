@@ -1,6 +1,5 @@
-_V1_CONTENT = {
-	'templates': {
-		'bootstrap': '''#!/bin/bash
+_CONTENT = {
+	'bootstrap': '''#!/bin/bash
 set -e
 set -x
 
@@ -10,26 +9,26 @@ which poetry
 
 poetry install''',
 
-		'console': '''#!/bin/bash
+	'console': '''#!/bin/bash
 set -e
 set -x
 
 poetry run python manage.py shell''',
 
-		'server': '''#!/bin/bash
+	'server': '''#!/bin/bash
 set -e
 set -x
 
 poetry run python manage.py runserver 0.0.0.0:8000''',
 
-		'setup': '''#!/bin/bash
+	'setup': '''#!/bin/bash
 set -e
 set -x
 
 script/bootstrap
 
 # Create .env if not present
-MAIN_FOLDER=main
+MAIN_FOLDER={{ name }}
 if [ ! -e $MAIN_FOLDER/.env ]; then
 	# Copy template
 	cp $MAIN_FOLDER/.env.example $MAIN_FOLDER/.env
@@ -47,7 +46,7 @@ fi
 # Run migrations
 poetry run python manage.py migrate''',
 
-		'test': '''#!/bin/bash
+	'test': '''#!/bin/bash
 set -e
 set -x
 
@@ -80,29 +79,28 @@ case $# in
 		;;
 esac''',
 
-		'update': '''#!/bin/bash
+	'update': '''#!/bin/bash
 set -e
 set -x
 
 script/bootstrap
 poetry run python manage.py migrate''',
 
-		'cibuild': '''#!/bin/bash
+	'cibuild': '''#!/bin/bash
 set -e
 set -x
 
 export CI=true
 script/test''',
 
-		'x-clean': '''#!/bin/bash
+	'x-clean': '''#!/bin/bash
 set -e
 set -x
 
 find -depth -name '__pycache__' -exec rm -rfv '{}' ';'
 '''
-	},
-	'symlinks': {
-		'shell': 'console',
-		'run': 'server',
-	},
+}
+_SYMLINKS = {
+	'shell': 'console',
+	'run': 'server',
 }
