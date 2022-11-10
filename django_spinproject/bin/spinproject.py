@@ -27,9 +27,23 @@ Please use the new format:
 		subprocess.run(['django-admin', 'startproject', name, path], check=True)
 		os.chdir(path)
 		ProjectInfoManager.init()
+		print(f'''Created new project at path: {path}
+
+Use django-spinproject --help to see which modules are available,
+turn them on with --enable.
+
+Edit spinproject.json to configure project settings.
+
+Happy hacking!''')
 
 	elif args.init_project_info:
 		ProjectInfoManager.init()
+		print(f'''Use django-spinproject --help to see which modules are available,
+turn them on with --enable.
+
+Edit spinproject.json to configure project settings.
+
+Happy hacking!''')
 
 	elif args.modules_to_enable is not None:
 		if args.modules_to_enable[0] == 'all':
