@@ -17,7 +17,7 @@ def main():
 	if args.directory is not None:
 		exit_with_output("""This is an deprecated project creation format available in version < 2.
 Please use the new format:
-  django-spinproject --create <path_to_project> [project_main_dir]""")
+  django-spinproject --create <path_to_project>""")
 
 	elif args.project_creation_data is not None:
 		path = args.project_creation_data[0]
