@@ -8,8 +8,8 @@ import os
 
 class SettingsModule(BaseModule):
 	name = 'settings'
-	help_text = """Improves settings.py file and creates .env.example file
-  Creates backup of settings.py file. If the backup exists, module does not update it.
+	help_text = """Improves settings.py file and creates .env.example file.
+Creates backup of settings.py file. If the backup exists, module does not update it.
 """
 	environments = (_V1_ENV, )
 	settings_filename = 'settings.py'

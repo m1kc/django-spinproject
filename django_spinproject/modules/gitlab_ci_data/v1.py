@@ -53,7 +53,6 @@ deploy_bleeding:
   before_script:
     - docker info
   script:
-    - echo 'TODO: change registry address and image name' && exit 1
     - echo $DOCKER_PASSWORD | docker login --username {{ username }} --password-stdin {% if repository %}{{ repository }}{% endif %}
     - docker build -t '{{ repository }}{% if repository %}/{% endif %}{{ image }}:bleeding' .
     - docker push '{{ repository }}{% if repository %}/{% endif %}{{ image }}:bleeding'
@@ -65,7 +64,6 @@ deploy_main:
   before_script:
     - docker info
   script:
-    - echo 'TODO: change registry address and image name' && exit 1
     - echo $DOCKER_PASSWORD | docker login --username {{ username }} --password-stdin {{ login_repository }}
     - docker build -t '{{ repository }}{% if repository %}/{% endif %}{{ image }}' .
     - docker push '{{ repository }}{% if repository %}/{% endif %}{{ image }}'

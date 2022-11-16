@@ -25,7 +25,10 @@ def upgrade_files_content(files_dir: str, expected_content: Dict[str, Sequence[s
 		os.mkdir(files_dir)
 
 	for filename in new_content:
-		print(f"Writing {files_dir}/{filename}...")
+		if files_dir[-1:] == '.':
+			files_dir = files_dir.rstrip('/.')
+
+		print(f"Writing {os.path.join(files_dir, filename)}...")
 		file_path = os.path.join(files_dir, filename)
 		write_file_content(file_path, new_content[filename])
 
