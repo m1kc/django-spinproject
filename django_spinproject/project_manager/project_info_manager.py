@@ -5,14 +5,17 @@ from ..generic.exit import exit_with_output
 import os
 
 
+def _check_module_existence(module_name: str) -> None:
+	if module_name not in MODULES:
+		exit_with_output(f"Module {module_name} doesn't exists", 1)
+
+
 def check_module_existence(method):
 	"""
 	Decorator for checking the existence of a module.
 	"""
 	def inner(cls, module_name: str, *args, **kwargs):
-		if module_name not in MODULES:
-			exit_with_output(f"Module {module_name} doesn't exists", 1)
-
+		_check_module_existence(module_name)
 		return method(cls, module_name, *args, **kwargs)
 
 	return inner
@@ -92,17 +95,24 @@ If you don't use poetry, other package manager will do, too.
 	@classmethod
 	@check_django_project_existence
 	@check_project_info_file_existence
-	@check_module_existence
-	def enable_module(cls, module_name: str) -> None:
+	def enable_modules(cls, *modules_to_enable) -> None:
 		project_info = ProjectInfo.load()
 
-		if module_name not in project_info.modules:
-			project_info.modules.append(module_name)
-			project_info.migration_state[module_name] = 0
-			project_info.save()
-			print(ENABLE_MODULE_MESSAGE_TEMPLATE.format(module_name=module_name))
-		else:
-			exit_with_output(f"Module {module_name} already enabled", 1)
+		for module_name in modules_to_enable:
+			_check_module_existence(module_name)
+
+			if module_name not in project_info.modules:
+				project_info.modules.append(module_name)
+				project_info.migration_state[module_name] = 0
+
+		project_info.save()
+
+		print(
+			ENABLE_MODULE_MESSAGE_TEMPLATE.format(
+				modules_as_list=', '.join(modules_to_enable),
+				modules_as_args=' '.join(modules_to_enable),
+			),
+		)
 
 	@classmethod
 	@check_django_project_existence
@@ -159,11 +169,12 @@ If you don't use poetry, other package manager will do, too.
 				except ValueError as e:
 					exit_with_output(f"Failed to update the module {module_name}. {e}", 1)
 
-			print(f"Successfully upgraded {module_name}: {_module_version_before_update} -> {module_last_version}")
+			if _module_version_before_update != module_last_version:
+				print(f"Successfully upgraded {module_name}: {_module_version_before_update} -> {module_last_version}")
 
 
-ENABLE_MODULE_MESSAGE_TEMPLATE = """Successfully enabled module: {module_name}
+ENABLE_MODULE_MESSAGE_TEMPLATE = """Successfully enabled modules: {modules_as_list}
 
-The module was added to config, but migrations
+The modules was added to config, but migrations
 were not run. Run them with:
-    django-spinproject --upgrade {module_name}"""
+    django-spinproject --upgrade {modules_as_args}"""

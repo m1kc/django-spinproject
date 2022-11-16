@@ -51,8 +51,7 @@ Happy hacking!''')
 		else:
 			modules_to_enable = args.modules_to_enable
 
-		for module_name in modules_to_enable:
-			ProjectInfoManager.enable_module(module_name)
+		ProjectInfoManager.enable_modules(*modules_to_enable)
 
 	elif args.module_to_disable is not None:
 		ProjectInfoManager.disable_module(args.module_to_disable[0])
