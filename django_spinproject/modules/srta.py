@@ -1,6 +1,9 @@
 from ._base import BaseModule
 from ._mixins import ChmodMixin
-from .srta_data import _V1_ENV, _V1_SYMLINKS
+from .srta_data import (
+	_V1_ENV, _V1_SYMLINKS,
+	_V2_ENV, _V2_SYMLINKS,
+)
 from ..generic.directory_cleaning import clean_dir
 from ..project_manager.project_info import ProjectInfo
 
@@ -13,8 +16,8 @@ from typing import Optional
 class SRTAModule(BaseModule, ChmodMixin):
 	name = 'srta'
 	help_text = "Creates srta scripts and additional symlinks"
-	environments = (_V1_ENV, )
-	symlinks = (_V1_SYMLINKS, )
+	environments = (_V1_ENV, _V2_ENV)
+	symlinks = (_V1_SYMLINKS, _V2_SYMLINKS)
 	files_dir = 'script'
 
 	@classmethod
