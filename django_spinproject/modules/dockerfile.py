@@ -1,12 +1,12 @@
 from ._base import BaseModule
-from .dockerfile_data import _V1_ENV
+from .dockerfile_data import _V1_ENV, _V2_ENV
 from ..project_manager.project_info import ProjectInfo
 
 
 class DockerfileModule(BaseModule):
 	name = 'dockerfile'
 	help_text = "Creates Dockerfile"
-	environments = (_V1_ENV,)
+	environments = (_V1_ENV, _V2_ENV,)
 
 	@classmethod
 	def _upgrade_step(cls, current_version: int, project_info: ProjectInfo, **render_kwargs) -> None:
