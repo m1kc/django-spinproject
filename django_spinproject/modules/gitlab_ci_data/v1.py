@@ -64,7 +64,7 @@ deploy_main:
   before_script:
     - docker info
   script:
-    - echo $DOCKER_PASSWORD | docker login --username {{ username }} --password-stdin {{ login_repository }}
+    - echo $DOCKER_PASSWORD | docker login --username {{ username }} --password-stdin {% if repository %}{{ repository }}{% endif %}
     - docker build -t '{{ repository }}{% if repository %}/{% endif %}{{ image }}' .
     - docker push '{{ repository }}{% if repository %}/{% endif %}{{ image }}'
 
