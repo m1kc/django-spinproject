@@ -57,7 +57,7 @@ def ask_project_name() -> str:
 	project_name = ""
 
 	while not project_name:
-		project_name = input("Enter project name: ")
+		project_name = input("Enter project name (not used yet): ")
 
 		if not project_name:
 			print("Project name can't be empty")
