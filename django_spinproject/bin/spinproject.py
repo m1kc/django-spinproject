@@ -15,9 +15,10 @@ def main():
 	args = argparser.parse_args()
 
 	if args.directory is not None:
-		exit_with_output("""This is an deprecated project creation format available in version < 2.
-Please use the new format:
-  django-spinproject --create <path_to_project>""")
+		exit_with_output("""Please use the new syntax:
+  django-spinproject --create <path_to_project>
+
+Old-style syntax is only available in versions < 2.""")
 
 	elif args.project_creation_data is not None:
 		path = args.project_creation_data[0]
