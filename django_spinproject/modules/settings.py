@@ -1,5 +1,5 @@
 from ._base import BaseModule
-from .settings_data import _V1_ENV
+from .settings_data import _V1_ENV, _V2_ENV
 from ..generic.directory_cleaning import clean_dir
 from ..project_manager.project_info import ProjectInfo
 
@@ -9,8 +9,9 @@ import os
 class SettingsModule(BaseModule):
 	name = 'settings'
 	help_text = """Improves settings.py file and creates .env.example file.
-Creates backup of settings.py file. If the backup exists, module does not update it."""
-	environments = (_V1_ENV, )
+Creates backup of settings.py file. If the backup exists, module does not update it.
+"""
+	environments = (_V1_ENV, _V2_ENV)
 	settings_filename = 'settings.py'
 	settings_backup_postfix = '.orig'
 
