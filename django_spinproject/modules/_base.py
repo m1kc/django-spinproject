@@ -14,6 +14,7 @@ class BaseModule:
 	help_text = ""
 	environments: Sequence[ExtendedEnvironment] = ()
 	files_dir = '.'
+	message_format = "[{module_name}]: {message}"
 
 	@classmethod
 	def last_version(cls) -> int:
@@ -21,6 +22,18 @@ class BaseModule:
 		Returns module last version number.
 		"""
 		return len(cls.environments)
+
+	@classmethod
+	def input(cls, message: str = '') -> str:
+		return input(cls.format_message(message))
+
+	@classmethod
+	def print(cls, message: str) -> None:
+		print(cls.format_message(message))
+
+	@classmethod
+	def format_message(cls, message: str) -> str:
+		return cls.message_format.format(module_name=cls.name, message=message)
 
 	@classmethod
 	def upgrade_step(cls, current_version: int, project_info: ProjectInfo) -> None:
