@@ -1,19 +1,5 @@
 # django-spinproject
 
--------
-
-### 2.0 preview is now available!
-
-Painless upgrades without recreating the whole project. All features are now optional. Reworked UI.
-
-To install: `pip install --user --upgrade 'git+https://github.com/m1kc/django-spinproject.git@next'`
-
-To get help: `django-spinproject --help`
-
-Take a look, leave your feedback.
-
--------
-
 Opinionated version of `django-admin startproject` that intends to go further and do things that startproject can't do but most people will do anyway. Here's what you get:
 
 * ⚛️ **Whitenoise**: usually you don't need that during local development but one day you're going to deploy your project and find out that it ignores the `static/` folder when running under gunicorn — which is sorta fine because big applications usually serve static files separately via nginx. Smaller apps with small number of assets, however, usually serve them within the same process, which is what whitenoise is for.
