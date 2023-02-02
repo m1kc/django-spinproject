@@ -22,13 +22,15 @@ Generated files will work fine in Django >= 2.0, not tested in earlier versions.
 
 ## How to use
 
-1. Install the package: `pip install django-spinproject`
-2. ~~`django-spinproject <path>`~~ (deprecated)
-3. `django-spinproject --create <path>`
+* Install the package: `pip install django-spinproject`
+* Create a new project: `django-spinproject --create <path>`
+* OR initialize spinproject in your existing project's folder: `django-spinproject --init`
 
-## Experimental features
+You're all set. Now you can take a look at the list of available modules: `django-spinproject --help`
 
-Can be used in an existing project folder. (Experimental stuff, unstable, subject to change, use at your own risk.)
+Use `django-spinproject --enable` to enable a module, `django-spinproject --upgrade` to apply changes.
+
+## Other commands
 
 * `--create PATH`: create django project in specified path 
 * `--init`: create spinproject.json file
@@ -36,11 +38,23 @@ Can be used in an existing project folder. (Experimental stuff, unstable, subjec
 * `--disable MODULE_TO_DISABLE`: disable specified module
 * `--upgrade [MODULE_TO_UPGRADE [MODULE_TO_UPGRADE ...]]`: upgrade (specified or all) enabled modules
 
+## Available modules
+
+* `gitignore` — Creates `.gitignore` file suitable for most Django projects.
+* `srta` — Creates [Scripts to Rule Them All](https://github.blog/2015-06-30-scripts-to-rule-them-all/) (simplifies life a lot, you should check it out).
+* `pytest` — Creates `pytest.ini` and `.coveragerc` files.
+* `dockerfile` — Creates a Dockerfile.
+* `dockerignore` — Creates `.dockerignore` (you should totally do that).
+* `docker-scripts` — Creates additional SRTA scripts for building and pushing your Docker image.
+* `gitlab-ci` — Creates GitLab CI config, `.gitlab-ci.yml`.
+* `pg-readonly` — Creates a DatabaseWrapper class for readonly connection to PostgreSQL.
+* `settings` — Improves the default `settings.py`, adding support for envvars and `.env` files. Also enables Whitenoise and CLI logger.
+
 ## Planned features
 
 (for requests, create an issue or drop me a line at m1kc@yandex.ru)
 
-* Some CLI flags to switch off the things you don't need.
+* login page template (see `experimental` branch)
 
 ## Changelog
 
