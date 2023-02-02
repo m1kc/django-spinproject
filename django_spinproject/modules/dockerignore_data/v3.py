@@ -2,10 +2,6 @@ _CONTENT = {
 	'.dockerignore': '''*.sqlite3
 *.sqlite3-journal
 
-.env
-main/.env
-**/.env
-
 **/__pycache__
 **/.cache
 **/.classpath
