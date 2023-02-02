@@ -1,47 +1,64 @@
 #!/usr/bin/env python3
 
+from ..project_manager.project_info_manager import ProjectInfoManager
+from ..generic.exit import exit_with_output
+from ..cli import create_argparser
+from ..modules import MODULES
+from ..constants import DEFAULT_MAIN
+
 import os
-import sys
 import subprocess
 
+
 def main():
-	argv = sys.argv[1:]
-	if (len(argv) not in [1,2]) or (argv == ['-h']) or (argv == ['--help']):
-		print('Usage:')
-		print('  startproject.py <path>')
-		print('')
-		print('Settings directory will be called `main`. You can override this')
-		print('by passing 2nd argument (deprecated).')
-		sys.exit(2)
+	argparser = create_argparser()
+	args = argparser.parse_args()
 
-	name = 'main'
-	path = argv[0]
-	if len(argv) == 2:
-		name = argv[1]
+	if args.directory is not None:
+		exit_with_output("""Please use the new syntax:
+  django-spinproject --create <path_to_project>
 
-	print(f"Creating project at `{path}`")
+Old-style syntax is only available in versions < 2.""")
 
-	subprocess.run(['mkdir', '-p', path], check=True)
-	subprocess.run(['django-admin', 'startproject', name, path], check=True)
+	elif args.project_creation_data is not None:
+		path = args.project_creation_data[0]
+		name = DEFAULT_MAIN
 
-	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+		subprocess.run(['mkdir', '-p', path], check=True)
+		subprocess.run(['django-admin', 'startproject', name, path], check=True)
+		os.chdir(path)
+		ProjectInfoManager.init()
+		print(f'''Created new project at path: {path}
 
+Use django-spinproject --help to see which modules are available,
+turn them on with --enable.
 
-	active_modules = [
-		'srta',
-		'dockerfile',
-		'makefile',
-		'settings',
-		# 'pytest',
-		'gitignore',
-		'dockerignore',
-		'pg-readonly',
-		'gitlab-ci',
-		'pytest',
-	]
+Edit spinproject.json to configure project settings.
 
-	for m in active_modules:
-		subprocess.run([os.path.join(BASE_DIR, f'enhance-{m}.py'), name, path], check=True)
+Happy hacking!''')
+
+	elif args.init_project_info:
+		ProjectInfoManager.init()
+		print(f'''Use django-spinproject --help to see which modules are available,
+turn them on with --enable.
+
+Edit spinproject.json to configure project settings.
+
+Happy hacking!''')
+
+	elif args.modules_to_enable is not None:
+		if args.modules_to_enable[0] == 'all':
+			modules_to_enable = list(MODULES.keys())
+		else:
+			modules_to_enable = args.modules_to_enable
+
+		ProjectInfoManager.enable_modules(*modules_to_enable)
+
+	elif args.module_to_disable is not None:
+		ProjectInfoManager.disable_module(args.module_to_disable[0])
+
+	elif args.modules_to_upgrade is not None:
+		ProjectInfoManager.upgrade_modules(*args.modules_to_upgrade)
 
 
 if __name__ == '__main__':
