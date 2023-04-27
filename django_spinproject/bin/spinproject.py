@@ -60,6 +60,10 @@ Happy hacking!''')
 	elif args.modules_to_upgrade is not None:
 		ProjectInfoManager.upgrade_modules(*args.modules_to_upgrade)
 
+	else:
+		argparser.print_help()
+		argparser.exit(1)
+
 
 if __name__ == '__main__':
 	main()

@@ -146,7 +146,7 @@ If you don't use poetry, other package manager will do, too.
 
 			if not_enabled_modules:
 				exit_with_output(
-					"Some modules are not enabled or don't exist and therefore cannot be updated\n"
+					"Some modules are not enabled or don't exist and therefore cannot be upgraded\n"
 					f"Modules: {','.join(not_enabled_modules)}",
 					1,
 				)
@@ -154,8 +154,8 @@ If you don't use poetry, other package manager will do, too.
 			modules_to_upgrade = module_names_intersection
 
 		for module_name in modules_to_upgrade:
-			_module_version_before_update = project_info.migration_state[module_name]
-			current_module_version = _module_version_before_update
+			_module_version_before_upgrade = project_info.migration_state[module_name]
+			current_module_version = _module_version_before_upgrade
 			module = MODULES[module_name]
 			module_last_version = module.last_version()
 
@@ -167,10 +167,10 @@ If you don't use poetry, other package manager will do, too.
 					project_info.save()
 
 				except ValueError as e:
-					exit_with_output(f"Failed to update the module {module_name}. {e}", 1)
+					exit_with_output(f"Failed to upgrade the module {module_name}. {e}", 1)
 
-			if _module_version_before_update != module_last_version:
-				print(f"Successfully upgraded {module_name}: {_module_version_before_update} -> {module_last_version}")
+			if _module_version_before_upgrade != module_last_version:
+				print(f"Successfully upgraded {module_name}: {_module_version_before_upgrade} -> {module_last_version}")
 
 
 ENABLE_MODULE_MESSAGE_TEMPLATE = """Successfully enabled modules: {modules_as_list}
