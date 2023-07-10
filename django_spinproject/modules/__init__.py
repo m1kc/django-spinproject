@@ -7,6 +7,7 @@ from .docker_scripts import DockerScriptsModule
 from .gitlab_ci import GitlabCIModule
 from .pg_readonly import PGReadonlyModule
 from .settings import SettingsModule
+from .login_template import LoginTemplateModule
 
 
 MODULES = {
@@ -19,4 +20,5 @@ MODULES = {
 	GitlabCIModule.name: GitlabCIModule,
 	PGReadonlyModule.name: PGReadonlyModule,
 	SettingsModule.name: SettingsModule,
+	LoginTemplateModule.name: LoginTemplateModule,
 }
