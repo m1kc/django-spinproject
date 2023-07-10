@@ -1,4 +1,5 @@
 from .modules import MODULES
+from .generic.package import Distribution
 
 import argparse
 import textwrap
@@ -71,5 +72,6 @@ def create_argparser() -> argparse.ArgumentParser:
 		type=str,
 		choices=MODULES.keys(),
 	)
+	parser.add_argument('--version', action='version', version=str(Distribution(parser.prog)))
 
 	return parser

@@ -9,7 +9,7 @@ def upgrade_files_content(files_dir: str, expected_content: Dict[str, Sequence[s
 	Upgrades content in specified files.
 
 	Args:
-		files_dir: Path to directory where the files should be updated.
+		files_dir: Path to directory where the files should be upgraded.
 		expected_content: Dictionary of expected content in existing files.
 		new_content: Dictionary of new content in all files.
 
@@ -17,7 +17,7 @@ def upgrade_files_content(files_dir: str, expected_content: Dict[str, Sequence[s
 		ValueError: If at least one file is modified.
 
 	Notes:
-		If the file does not exist during the update, it will be added with the new content.
+		If the file does not exist during the upgrade, it will be added with the new content.
 	"""
 	check_existed_files(files_dir, expected_content)
 

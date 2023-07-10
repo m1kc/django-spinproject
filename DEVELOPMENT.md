@@ -1,5 +1,12 @@
 # Developer notes
 
+## Install git version
+
+```sh
+pip install --user --upgrade 'git+https://github.com/m1kc/django-spinproject.git@master'
+# poetry add 'git+https://github.com/m1kc/django-spinproject.git@master'
+```
+
 ## Publishing a release
 
 1. Bump version in pyproject.toml. Create a commit with message `v1.x.x`;
