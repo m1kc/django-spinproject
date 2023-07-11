@@ -50,4 +50,16 @@ _CONTENT = {
 </body>
 </html>
 {% endraw %}""",
+
+	'logged_out.html': """{% raw %}<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Logged out</title>
+</head>
+<body>
+	<p>You have been successfully logged out.</p>
+</body>
+</html>
+{% endraw %}""",
 }
