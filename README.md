@@ -1,13 +1,14 @@
 # django-spinproject
 
-Opinionated version of `django-admin startproject` that intends to go further and do things that startproject can't do but most people will do anyway. Here's what you get:
+Opinionated version of `django-admin startproject` that intends to go further and do things that startproject can't do but most people will do anyway. Here's what you can get:
 
-* ⚛️ **Whitenoise**: usually you don't need that during local development but one day you're going to deploy your project and find out that it ignores the `static/` folder when running under gunicorn — which is sorta fine because big applications usually serve static files separately via nginx. Smaller apps with small number of assets, however, usually serve them within the same process, which is what whitenoise is for.
-* 🔧 **settings.py**: it's slightly modified to also understand environment variables and `.env` files. This functionality requires the `django-environ` package. Also, app logger is mostly pre-configured for you.
-* 🔒 **Support for marking PostgreSQL databases as read-only**.
+* ⚛️ **Whitenoise**: for serving static files in production (usually you don't want to set up a separate server for this).
+* 🔧 **settings.py**: slightly modified to also understand environment variables and `.env` files. This functionality requires the `django-environ` package. Also, app logger is mostly pre-configured for you.
+* 🔒 **Minimal login/logout pages** so you can set this up without reading the guide again.
+* 🔒 **Support for marking PostgreSQL databases as read-only** to prevent accidental modification of critical data.
 * 🧰 `script/bootstrap` and other [scripts to rule them all](https://github.blog/2015-06-30-scripts-to-rule-them-all/) so your fellow developers and maintainers don't ask you how to run this thing. Current versions of these scripts optimized for use with [poetry](https://python-poetry.org/), but you can easily adapt them for any Python package manager.
 * 🏗️ **Dockerfile and .dockerignore**: one day your app will go to production, and we've got you covered.
-* 🏛️ **Gitlab CI config**: CI is a good thing.
+* 🏛️ **Gitlab CI config**.
 * ⚕️ **Pre-configured linter** so you can find some common problems automagically.
 * 🏃 **Pre-configured pytest** because you are going to need unit tests one day.
 * 🗃️ **Auto-checks if you forgot to create migrations** whenever you run tests or CI.
@@ -30,13 +31,13 @@ You're all set. Now you can take a look at the list of available modules: `djang
 
 Use `django-spinproject --enable` to enable a module, `django-spinproject --upgrade` to apply changes.
 
-## Other commands
+## CLI commands
 
-* `--create PATH`: create django project in specified path 
+* `--create PATH`: create django project in specified path
 * `--init`: create spinproject.json file
-* `--enable MODULE_TO_ENABLE [MODULE_TO_ENABLE ...]`: enable specified module(s). use 'all' to enable all modules
+* `--enable MODULE_TO_ENABLE`: enable specified module; use 'all' to enable all modules
 * `--disable MODULE_TO_DISABLE`: disable specified module
-* `--upgrade [MODULE_TO_UPGRADE [MODULE_TO_UPGRADE ...]]`: upgrade (specified or all) enabled modules
+* `--upgrade [MODULE_TO_UPGRADE]`: upgrade (specified or all) enabled modules
 
 ## Available modules
 
@@ -49,12 +50,11 @@ Use `django-spinproject --enable` to enable a module, `django-spinproject --upgr
 * `gitlab-ci` — Creates GitLab CI config, `.gitlab-ci.yml`.
 * `pg-readonly` — Creates a DatabaseWrapper class for readonly connection to PostgreSQL.
 * `settings` — Improves the default `settings.py`, adding support for envvars and `.env` files. Also enables Whitenoise and CLI logger.
+* `login-template` — Creates minimal login/logout pages.
 
 ## Planned features
 
 (for requests, create an issue or drop me a line at m1kc@yandex.ru)
-
-* login page template (see `experimental` branch)
 
 ## Changelog
 
