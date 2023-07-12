@@ -84,6 +84,8 @@ These commands should do the trick:
  poetry add psycopg2-binary
  # For settings module
  poetry add django-environ whitenoise
+ # For gunicorn (HTTP server)
+ poetry add gunicorn
  # For linter script
  poetry add --dev flake8
  # For pytest
