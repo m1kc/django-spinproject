@@ -34,7 +34,7 @@ class LoginTemplateModule(BaseModule):
 		if current_version == 0:
 			cls.print(f"""The login page template has been created, but that's not all yet.
 First of all, create a URL path for authorization.
-Add this code to {project_info.config.main}/urls.py:
+Add something like this to {project_info.config.main}/urls.py:
 \"\"\"
 from django.urls import path, include
 
@@ -43,7 +43,7 @@ urlpatterns += [
 ]
 \"\"\"
 
-Enable templates in {project_info.config.main}/settings.py:
+Make sure templates are enabled in {project_info.config.main}/settings.py:
 \"\"\"
 TEMPLATES = [
 	{{
@@ -61,4 +61,8 @@ from django.contrib.auth.decorators import login_required
 def my_view(request):
 	...
 \"\"\"
+
+Use URLs /accounts/login and /accounts/logout to log in and out.
+
+Also, you probably want to set LOGIN_REDIRECT_URL = '/' in settings.py.
 """)
