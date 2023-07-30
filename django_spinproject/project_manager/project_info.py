@@ -5,7 +5,8 @@ from ..constants import DEFAULT_MAIN
 
 import json
 import os
-from typing import Union, Optional
+from warnings import warn
+from typing import Any, Union, Optional
 
 
 class ProjectInfoError(Exception):
@@ -29,6 +30,10 @@ class DockerConfig(SerializationTrait, CompatibilityTrait):
 		self.image = image
 		self.tag = tag
 		self.username = username
+
+	@property
+	def is_blank(self) -> bool:
+		return self.repository == ''
 
 
 class ProjectConfig(SerializationTrait, CompatibilityTrait):
@@ -59,6 +64,18 @@ class ProjectConfig(SerializationTrait, CompatibilityTrait):
 				serialized_obj['module'][module_name] = module_config.serialize()
 
 		return serialized_obj
+
+	def __getattribute__(self, __name: str) -> Any:
+		attr = super().__getattribute__(__name)
+
+		if __name == 'docker' and attr.is_blank:
+			warn(
+				"You are using a module that affects an empty \"docker\" section in the project file.\n"
+				"Please specify your Docker image configuration parameters in the `spinproject.json` file "
+				"otherwise it can lead to errors and unpredictable behavior."
+			)
+
+		return attr
 
 
 class ProjectInfo(SerializationTrait):
