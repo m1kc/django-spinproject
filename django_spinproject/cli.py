@@ -47,11 +47,14 @@ def create_argparser() -> argparse.ArgumentParser:
 		'--enable',
 		dest='modules_to_enable',
 		metavar='MODULE_TO_ENABLE',
-		help="enable specified module(s). use 'all' to enable all available modules.",
+		help=(
+			"enable specified module(s). "
+			"use 'all' to enable most common modules or 'ALL' to enable all available modules."
+		),
 		action='store',
 		nargs='+',
 		type=str,
-		choices=['all'] + list(MODULES.keys()),
+		choices=['all', 'ALL'] + list(MODULES.keys()),
 	)
 	parser.add_argument(
 		'--disable',

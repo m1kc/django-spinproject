@@ -3,7 +3,7 @@
 from ..project_manager.project_info_manager import ProjectInfoManager
 from ..generic.exit import exit_with_output
 from ..cli import create_argparser
-from ..modules import MODULES
+from ..modules import MODULES, MOST_COMMON_MODULES
 from ..constants import DEFAULT_MAIN
 
 import os
@@ -48,6 +48,8 @@ Happy hacking!''')
 
 	elif args.modules_to_enable is not None:
 		if args.modules_to_enable[0] == 'all':
+			modules_to_enable = list(MOST_COMMON_MODULES.keys())
+		elif args.modules_to_enable[0] == 'ALL':
 			modules_to_enable = list(MODULES.keys())
 		else:
 			modules_to_enable = args.modules_to_enable
