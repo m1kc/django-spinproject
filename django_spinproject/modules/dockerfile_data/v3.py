@@ -1,5 +1,5 @@
 _CONTENT = {
-	'Dockerfile': '''FROM python:3.9.6-slim-bullseye
+	'Dockerfile': '''FROM {{ base_image }}
 
 # --allow-releaseinfo-change for cases when stable becomes oldstable
 RUN apt-get update --allow-releaseinfo-change \\

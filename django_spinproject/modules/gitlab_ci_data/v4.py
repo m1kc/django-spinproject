@@ -3,7 +3,7 @@ _CONTENT = {
 - check
 - deploy
 
-image: python:3.9.6-slim-bullseye
+image: {{ base_image }}
 
 services:
   - postgres:13.1-alpine
