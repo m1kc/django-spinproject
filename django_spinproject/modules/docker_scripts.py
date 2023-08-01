@@ -1,7 +1,7 @@
 from ._base import BaseModule
 from ._mixins import ChmodMixin
 from .docker_scripts_data import _V1_ENV
-from ..project_manager.project_info import ProjectInfo
+from ..project.project_info import ProjectInfo
 
 
 class DockerScriptsModule(BaseModule, ChmodMixin):

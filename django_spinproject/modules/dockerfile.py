@@ -1,6 +1,6 @@
 from ._base import BaseModule
 from .dockerfile_data import _V1_ENV, _V2_ENV, _V3_ENV
-from ..project_manager.project_info import ProjectInfo
+from ..project.project_info import ProjectInfo
 
 
 class DockerfileModule(BaseModule):
