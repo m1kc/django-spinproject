@@ -67,6 +67,9 @@ deploy_bleeding:
     - echo $DOCKER_PASSWORD | docker login --username {{ username }} --password-stdin {% if repository %}{{ repository }}{% endif %}
     - docker build -t '{{ repository }}{% if repository %}/{% endif %}{{ image }}:bleeding' .
     - docker push '{{ repository }}{% if repository %}/{% endif %}{{ image }}:bleeding'
+# environment:
+#   name: production
+#   url: https://mywebsite.com
 
 deploy_main:
   when: manual
@@ -80,6 +83,9 @@ deploy_main:
     - echo $DOCKER_PASSWORD | docker login --username {{ username }} --password-stdin {% if repository %}{{ repository }}{% endif %}
     - docker build -t '{{ repository }}{% if repository %}/{% endif %}{{ image }}' .
     - docker push '{{ repository }}{% if repository %}/{% endif %}{{ image }}'
+# environment:
+#   name: production
+#   url: https://mywebsite.com
 
 # ISSUE: nobody can guarantee that image did not change between deploy_bleeding and deploy_promote. Use at your own risk.
 # deploy_promote:
