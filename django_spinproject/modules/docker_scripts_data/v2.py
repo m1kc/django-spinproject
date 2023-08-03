@@ -38,6 +38,8 @@ while [[ $# -gt 0 ]]; do
 			exit 1
 		;;
 		*)
+			echo "$0 does not support positional arguments"
+			exit 1
 		;;
 	esac
 done
@@ -89,6 +91,8 @@ while [[ $# -gt 0 ]]; do
 			exit 1
 		;;
 		*)
+			echo "$0 does not support positional arguments"
+			exit 1
 		;;
 	esac
 done
