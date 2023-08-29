@@ -35,7 +35,7 @@ Use `django-spinproject --enable` to enable a module, `django-spinproject --upgr
 
 * `--create PATH`: create django project in specified path
 * `--init`: create spinproject.json file
-* `--enable MODULE_TO_ENABLE`: enable specified module; use 'all' to enable all modules
+* `--enable MODULE_TO_ENABLE`: enable specified module; use 'all' to enable most common modules; use 'ALL' to enable all available modules;
 * `--disable MODULE_TO_DISABLE`: disable specified module
 * `--upgrade [MODULE_TO_UPGRADE]`: upgrade (specified or all) enabled modules
 

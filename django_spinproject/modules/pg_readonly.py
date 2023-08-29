@@ -1,6 +1,6 @@
 from ._base import BaseModule
 from .pg_readonly_data import _V1_ENV
-from ..project_manager.project_info import ProjectInfo
+from ..project.project_info import ProjectInfo
 
 import os
 
