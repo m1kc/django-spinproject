@@ -3,7 +3,7 @@ _CONTENT = {
 set -e
 set -x
 
-which python3 || which python
+which python3
 #which virtualenv
 which poetry
 
@@ -13,13 +13,13 @@ poetry install --sync''',
 set -e
 set -x
 
-poetry run python manage.py shell''',
+poetry run python3 manage.py shell''',
 
 	'server': '''#!/bin/bash
 set -e
 set -x
 
-poetry run python manage.py runserver 0.0.0.0:8000''',
+poetry run python3 manage.py runserver 0.0.0.0:8000''',
 
 	'setup': '''#!/bin/bash
 set -e
@@ -32,7 +32,7 @@ MAIN_FOLDER={{ name }}
 if [ ! -e $MAIN_FOLDER/.env ]; then
 	# Copy template
 	cp $MAIN_FOLDER/.env.example $MAIN_FOLDER/.env
-	SECRET=$(poetry run python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())")
+	SECRET=$(poetry run python3 -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())")
 	sed -i 's|DJANGO_SECRET_KEY=""|DJANGO_SECRET_KEY="'${SECRET//&/\\\\&}'"|g' $MAIN_FOLDER/.env
 	# Show
 	cat $MAIN_FOLDER/.env
@@ -43,7 +43,7 @@ if [ -e db.sqlite3 ]; then
         mv db.sqlite3 db.sqlite3~
 fi
 # Run migrations
-poetry run python manage.py migrate''',
+poetry run python3 manage.py migrate''',
 
 	'test': '''#!/bin/bash
 set -e
@@ -83,7 +83,7 @@ set -e
 set -x
 
 script/bootstrap
-poetry run python manage.py migrate''',
+poetry run python3 manage.py migrate''',
 
 	'cibuild': '''#!/bin/bash
 set -e
