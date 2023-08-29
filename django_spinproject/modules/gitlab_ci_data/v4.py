@@ -64,7 +64,7 @@ deploy_bleeding:
   services: []
   cache: {}
   script:
-    - echo $DOCKER_PASSWORD | docker login --username {{ username }} --password-stdin {% if repository %}{{ repository }}{% endif %}
+    - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin {% if repository %}{{ repository }}{% endif %}
     - script/x-dockerbuild -t bleeding
     - script/x-dockerpush -t bleeding
 # environment:
@@ -80,7 +80,7 @@ deploy_main:
   services: []
   cache: {}
   script:
-    - echo $DOCKER_PASSWORD | docker login --username {{ username }} --password-stdin {% if repository %}{{ repository }}{% endif %}
+    - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin {% if repository %}{{ repository }}{% endif %}
     - script/x-dockerbuild
     - script/x-dockerpush
 # environment:
