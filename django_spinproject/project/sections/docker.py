@@ -1,5 +1,6 @@
 from ...generic.serialization import SerializationTrait
 
+from warnings import warn
 from abc import ABC
 
 
@@ -50,3 +51,13 @@ class DockerConfigV2(DockerConfig):
 	@property
 	def is_blank(self) -> bool:
 		return super().is_blank or self.base_image == ''
+
+	def __getattribute__(self, __name):
+		if __name == 'username':
+			warn(
+				"The attribute 'username' of DockerConfig is deprecated and will not be used in future",
+				DeprecationWarning,
+				stacklevel=2,
+			)
+
+		return super().__getattribute__(__name)
