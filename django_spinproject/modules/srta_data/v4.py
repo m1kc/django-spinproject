@@ -7,12 +7,12 @@ which python3
 #which virtualenv
 which poetry
 
-if [ "$(cat pyproject.toml | grep '^packages')" ]; then 
-	echo 'The "packages" option has been detected. This may lead to a dependency installation error.'
+if [ "$(cat pyproject.toml | grep '^packages')" ]; then
+	echo 'Warning: The "packages" option has been detected in pyproject.toml. This may lead to a dependency installation error.'
 fi
 
 if [ ! -e README.md ]; then
-	echo "Missing readme file. Creating README.md file..."
+	echo "Missing README.md. Creating an empty one for you."
 	touch README.md
 fi
 
