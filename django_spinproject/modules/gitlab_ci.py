@@ -1,12 +1,12 @@
 from ._base import BaseModule
-from .gitlab_ci_data import _V1_ENV, _V2_ENV, _V3_ENV, _V4_ENV
+from .gitlab_ci_data import _V1_ENV, _V2_ENV, _V3_ENV, _V4_ENV, _V5_ENV
 from ..project.project_info import ProjectInfo
 
 
 class GitlabCIModule(BaseModule):
 	name = 'gitlab-ci'
 	help_text = "Creates .gitlab-ci.yml file"
-	environments = (_V1_ENV, _V2_ENV, _V3_ENV, _V4_ENV)
+	environments = (_V1_ENV, _V2_ENV, _V3_ENV, _V4_ENV, _V5_ENV)
 
 	@classmethod
 	def _upgrade_step(cls, current_version: int, project_info: ProjectInfo, **render_kwargs) -> None:
