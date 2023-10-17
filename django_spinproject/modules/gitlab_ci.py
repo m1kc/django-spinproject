@@ -1,5 +1,5 @@
 from ._base import BaseModule
-from .gitlab_ci_data import _V1_ENV, _V2_ENV, _V3_ENV, _V4_ENV, _V5_ENV
+from .gitlab_ci_data import _V1_ENV, _V2_ENV, _V3_ENV, _V4_ENV
 from ..project.project_info import ProjectInfo
 
 
