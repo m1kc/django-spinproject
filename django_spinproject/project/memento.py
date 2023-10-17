@@ -41,12 +41,18 @@ class ProjectInfoMemento:
 			info: Project info which to be saved.
 			overwrite: Flag for overwriting the project file.
 		"""
-		if not overwrite and self.does_project_file_exist():
-			exit_with_output(f"{self.filename} file already exists", 1)
+		serialization_settings = {}
+
+		if not overwrite:
+			if self.does_project_file_exist():
+				exit_with_output(f"{self.filename} file already exists", 1)
+
+			# If the project file is not overwritten, then a new project may be created.
+			serialization_settings['is_initial'] = True
 
 		try:
 			with open(self.filename, mode='w') as file:
-				json.dump(info.serialize(), file, indent=2)
+				json.dump(info.serialize(**serialization_settings), file, indent=2)
 
 		except PermissionError:
 			exit_with_output("Unable to save project info. Permission denied", 1)
