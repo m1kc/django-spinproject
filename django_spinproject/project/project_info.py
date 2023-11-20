@@ -105,6 +105,9 @@ class ProjectInfoV2(ProjectInfo):
 		super().__init__(project_name, main)
 		self.serialization_settings = {}
 
+	# Basically, this pair of serialize/deserialize hides the legacy `docker.username` field
+	# for new projects.
+
 	def serialize(self, **kwargs) -> dict:
 		is_initial = kwargs.get('is_initial', False)
 		serialized_data = super().serialize()
