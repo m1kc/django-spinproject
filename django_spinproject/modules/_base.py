@@ -1,5 +1,5 @@
 from ..generic.dicts_merging import merge_dicts
-from ..project_manager.project_info import ProjectInfo
+from ..project.project_info import ProjectInfo
 from ..generic.extended_jinja_environment import ExtendedEnvironment
 from ..generic.file_upgrade import upgrade_files_content
 from ..generic.directory_cleaning import clean_dir

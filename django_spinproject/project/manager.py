@@ -1,8 +1,12 @@
-from .project_info import ProjectInfo
+from .project_info import VERSION_REGISTRY
+from .memento import ProjectInfoMemento
 from ..modules import MODULES
 from ..generic.exit import exit_with_output
 
 import os
+
+
+LatestProjectInfo = VERSION_REGISTRY.get_latest_version()
 
 
 def _check_module_existence(module_name: str) -> None:
@@ -26,7 +30,7 @@ def check_project_info_file_existence(method):
 	Decorator for checking the existence of a project information file.
 	"""
 	def inner(cls, *args, **kwargs):
-		if not ProjectInfo.check_project_file_existence():
+		if not ProjectInfoMemento().does_project_file_exist():
 			exit_with_output("Project is not initialized", 1)
 
 		return method(cls, *args, **kwargs)
@@ -65,15 +69,16 @@ def ask_project_name() -> str:
 	return project_name
 
 
-class ProjectInfoManager:
+class ProjectManager:
 	@classmethod
 	@check_django_project_existence
 	def init(cls) -> None:
 		"""
 		Initializes the project file.
 		"""
-		project_info = ProjectInfo(project_name=ask_project_name())
-		project_info.save(overwrite=False)
+		project_info = LatestProjectInfo(project_name=ask_project_name())
+		memento = ProjectInfoMemento()
+		memento.save(project_info, overwrite=False)
 		print("""Note: third-party packages are required for some modules.
 These commands should do the trick:
 
@@ -98,7 +103,8 @@ If you don't use poetry, other package manager will do, too.
 	@check_django_project_existence
 	@check_project_info_file_existence
 	def enable_modules(cls, *modules_to_enable) -> None:
-		project_info = ProjectInfo.load()
+		memento = ProjectInfoMemento()
+		project_info = memento.load()
 
 		for module_name in modules_to_enable:
 			_check_module_existence(module_name)
@@ -107,7 +113,7 @@ If you don't use poetry, other package manager will do, too.
 				project_info.modules.append(module_name)
 				project_info.migration_state[module_name] = 0
 
-		project_info.save()
+		memento.save(project_info)
 
 		print(
 			ENABLE_MODULE_MESSAGE_TEMPLATE.format(
@@ -121,13 +127,14 @@ If you don't use poetry, other package manager will do, too.
 	@check_project_info_file_existence
 	@check_module_existence
 	def disable_module(cls, module_name: str) -> None:
-		project_info = ProjectInfo.load()
+		memento = ProjectInfoMemento()
+		project_info = memento.load()
 
 		if module_name in project_info.modules:
 			MODULES[module_name].cleanup(project_info.migration_state[module_name], project_info)
 			project_info.modules.remove(module_name)
 			del project_info.migration_state[module_name]
-			project_info.save()
+			memento.save(project_info)
 			print(f"Successfully disabled module: {module_name}")
 		else:
 			exit_with_output(f"Module {module_name} already disabled", 1)
@@ -136,7 +143,8 @@ If you don't use poetry, other package manager will do, too.
 	@check_django_project_existence
 	@check_project_info_file_existence
 	def upgrade_modules(cls, *modules_to_upgrade) -> None:
-		project_info = ProjectInfo.load()
+		memento = ProjectInfoMemento()
+		project_info = memento.load()
 
 		if not modules_to_upgrade:
 			modules_to_upgrade = project_info.modules
@@ -166,7 +174,7 @@ If you don't use poetry, other package manager will do, too.
 					module.upgrade_step(current_module_version, project_info)
 					current_module_version += 1
 					project_info.migration_state[module_name] = current_module_version
-					project_info.save()
+					memento.save(project_info)
 
 				except ValueError as e:
 					exit_with_output(f"Failed to upgrade the module {module_name}. {e}", 1)

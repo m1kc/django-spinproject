@@ -10,7 +10,7 @@ from .settings import SettingsModule
 from .login_template import LoginTemplateModule
 
 
-MODULES = {
+MOST_COMMON_MODULES = {
 	GitignoreModule.name: GitignoreModule,
 	SRTAModule.name: SRTAModule,
 	PytestModule.name: PytestModule,
@@ -20,5 +20,13 @@ MODULES = {
 	GitlabCIModule.name: GitlabCIModule,
 	PGReadonlyModule.name: PGReadonlyModule,
 	SettingsModule.name: SettingsModule,
+}
+
+LEAST_COMMON_MODULES = {
 	LoginTemplateModule.name: LoginTemplateModule,
+}
+
+MODULES = {
+	**MOST_COMMON_MODULES,
+	**LEAST_COMMON_MODULES,
 }

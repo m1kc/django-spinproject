@@ -1,3 +1,6 @@
+from abc import ABC, abstractmethod
+
+
 class SerializationTrait:
 	"""
 	Allows to serialize objects, including nested data structures if they are inherited from this class.
@@ -12,3 +15,12 @@ class SerializationTrait:
 				serialized_obj[key] = value
 
 		return serialized_obj
+
+
+class DeserializingCapable(ABC):
+	"""
+	Deserializable object interface.
+	"""
+	@classmethod
+	@abstractmethod
+	def deserialize(cls, raw_data: dict) -> 'DeserializingCapable': ...

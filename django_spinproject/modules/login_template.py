@@ -1,6 +1,6 @@
 from ._base import BaseModule
 from .login_template_data import _V1_ENV
-from ..project_manager.project_info import ProjectInfo
+from ..project.project_info import ProjectInfo
 from ..generic.exit import exit_with_output
 from ..constants import DJANGO_TEMPLATES_DIR, DJANGO_REGISTRATION_DIR
 
