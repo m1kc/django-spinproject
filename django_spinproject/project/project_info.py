@@ -70,6 +70,23 @@ class ProjectInfo(SerializationTrait, DeserializingCapable):
 
 		return instance
 
+	def serialize(self, **kwargs) -> dict:
+		"""
+		Serializes project info.
+
+		Args:
+			**kwargs: serialization settings.
+
+		Notes:
+			Not all project versions use all settings.
+			Possible kwargs options:
+				`is_initial` - Flag of the initial serialization of project information.
+
+		Returns:
+			Project info in the form of a dictionary.
+		"""
+		return super().serialize()
+
 
 @VERSION_REGISTRY.register
 class ProjectInfoV1(ProjectInfo):
@@ -83,3 +100,35 @@ class ProjectInfoV2(ProjectInfo):
 	ProjectConfig = ProjectConfigV2
 	DockerConfig = DockerConfigV2
 	VERSION = 2
+
+	def __init__(self, project_name: str, main: str = DEFAULT_MAIN):
+		super().__init__(project_name, main)
+		self.serialization_settings = {}
+
+	def serialize(self, **kwargs) -> dict:
+		is_initial = kwargs.get('is_initial', False)
+		serialized_data = super().serialize()
+
+		if is_initial or self.serialization_settings.get(self.DOCKER_LABEL, {}).get('ignore_username', False):
+			self.serialization_settings.setdefault(self.DOCKER_LABEL, {})
+			self.serialization_settings[self.DOCKER_LABEL]['ignore_username'] = True
+			del serialized_data[self.CONFIG_LABEL][self.DOCKER_LABEL]['username']
+
+		del serialized_data['serialization_settings']
+
+		return serialized_data
+
+	@classmethod
+	def deserialize(cls, raw_data: dict) -> 'ProjectInfoV2':
+		if raw_data.get(cls.CONFIG_LABEL, {}).get(cls.DOCKER_LABEL, {}).get('username') is None:
+			docker_username_is_missing = True
+		else:
+			docker_username_is_missing = False
+
+		obj = super().deserialize(raw_data)
+
+		if docker_username_is_missing:
+			obj.serialization_settings.setdefault(cls.DOCKER_LABEL, {})
+			obj.serialization_settings[cls.DOCKER_LABEL]['ignore_username'] = True
+
+		return obj
