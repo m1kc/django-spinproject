@@ -10,7 +10,7 @@ RUN apt-get update --allow-releaseinfo-change \\
         ruby-foreman \\
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install poetry
+RUN pip install poetry==1.7.1
 RUN poetry config virtualenvs.create false
 
 COPY pyproject.toml ./
