@@ -92,9 +92,11 @@ These commands should do the trick:
  # For gunicorn (HTTP server)
  poetry add gunicorn
  # For linter script
- poetry add --dev flake8
+ poetry add -G dev flake8 flake8-zale
  # For pytest
- poetry add --dev pytest pytest-django pytest-cov
+ poetry add -G dev pytest pytest-django pytest-cov
+ # For dependency audit
+ poetry add -G dev pip-audit-extra
 
 If you don't use poetry, other package manager will do, too.
 """)
