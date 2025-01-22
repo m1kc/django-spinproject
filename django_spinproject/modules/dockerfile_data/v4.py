@@ -15,7 +15,7 @@ RUN poetry config virtualenvs.create false
 
 COPY pyproject.toml ./
 COPY poetry.lock ./
-RUN poetry install
+RUN poetry install --no-root
 
 ENV DJANGO_SETTINGS_MODULE {{ name }}.settings
 ENV DJANGO_APP={{ name }}
