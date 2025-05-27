@@ -82,23 +82,23 @@ class ProjectManager:
 		print("""Note: third-party packages are required for some modules.
 These commands should do the trick:
 
- poetry init
+ uv init
  # For Django itself
- poetry add django
+ uv add django
  # For its PostgreSQL adapter
- poetry add psycopg2-binary
+ uv add psycopg[binary]
  # For settings module
- poetry add django-environ whitenoise
+ uv add django-environ whitenoise
  # For gunicorn (HTTP server)
- poetry add gunicorn
+ uv add gunicorn
  # For linter script
- poetry add -G dev flake8 flake8-zale
+ uv add --dev flake8 flake8-zale
  # For pytest
- poetry add -G dev pytest pytest-django pytest-cov
+ uv add --dev pytest pytest-django pytest-cov
  # For dependency audit
- poetry add -G dev pip-audit-extra
+ uv add --dev pip-audit-extra
 
-If you don't use poetry, other package manager will do, too.
+If you don't use uv, other package manager will do, too.
 """)
 
 	@classmethod

@@ -3,7 +3,7 @@ _CONTENT = {
 - check
 - deploy
 
-image: python:3.8
+image: {{ base_image }}
 
 services:
   - postgres:13.1-alpine
@@ -21,20 +21,20 @@ variables:
   # Change pip's cache directory to be inside the project directory since we can
   # only cache local items.
   PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  UV_CACHE_DIR: "$CI_PROJECT_DIR/.cache/uv"
   # Faster CI caching
   FF_USE_FASTZIP: 1
 
 cache:
   paths:
-    - .cache/pip
-    - .cache/pypoetry
     - venv/
+    - .cache/pip
+    - .cache/uv
 
 before_script:
   - python -V  # Print out python version for debugging
-  - pip install -q poetry
-  - poetry config cache-dir "$CI_PROJECT_DIR/.cache/pypoetry"
-  - poetry config virtualenvs.create true
+  - pip install uv
+  - uv venv --allow-existing
 
 test:
   stage: check
@@ -44,7 +44,9 @@ test:
   coverage: '/^TOTAL.+?(\d+\%)$/'
   artifacts:
     reports:
-      cobertura: coverage.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
 
 deploy_bleeding:
   when: manual
@@ -52,10 +54,15 @@ deploy_bleeding:
   image: "docker:19.03.1"
   before_script:
     - docker info
+  services: []
+  cache: {}
   script:
-    - echo $DOCKER_PASSWORD | docker login --username {{ username }} --password-stdin {% if repository %}{{ repository }}{% endif %}
-    - docker build -t '{{ repository }}{% if repository %}/{% endif %}{{ image }}:bleeding' .
-    - docker push '{{ repository }}{% if repository %}/{% endif %}{{ image }}:bleeding'
+    - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin {% if repository %}{{ repository }}{% endif %}
+    - script/x-dockerbuild -t bleeding
+    - script/x-dockerpush -t bleeding
+# environment:
+#   name: production
+#   url: https://mywebsite.com
 
 deploy_main:
   when: manual
@@ -63,10 +70,15 @@ deploy_main:
   image: "docker:19.03.1"
   before_script:
     - docker info
+  services: []
+  cache: {}
   script:
-    - echo $DOCKER_PASSWORD | docker login --username {{ username }} --password-stdin {% if repository %}{{ repository }}{% endif %}
-    - docker build -t '{{ repository }}{% if repository %}/{% endif %}{{ image }}' .
-    - docker push '{{ repository }}{% if repository %}/{% endif %}{{ image }}'
+    - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin {% if repository %}{{ repository }}{% endif %}
+    - script/x-dockerbuild
+    - script/x-dockerpush
+# environment:
+#   name: production
+#   url: https://mywebsite.com
 
 # ISSUE: nobody can guarantee that image did not change between deploy_bleeding and deploy_promote. Use at your own risk.
 # deploy_promote:

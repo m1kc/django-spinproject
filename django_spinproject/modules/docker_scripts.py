@@ -1,13 +1,13 @@
 from ._base import BaseModule
 from ._mixins import ChmodMixin
-from .docker_scripts_data import _V1_ENV, _V2_ENV, _V3_ENV
+from .docker_scripts_data import _V1_ENV
 from ..project.project_info import ProjectInfo
 
 
 class DockerScriptsModule(BaseModule, ChmodMixin):
 	name = 'docker-scripts'
 	help_text = "Creates scripts for building and pushing docker image"
-	environments = (_V1_ENV, _V2_ENV, _V3_ENV)
+	environments = (_V1_ENV, )
 	files_dir = 'script'
 
 	@classmethod

@@ -1,7 +1,7 @@
 _CONTENT = {
-	'Dockerfile': '''FROM alang/django:2.1-python3
+	'Dockerfile': '''FROM {{ base_image }}
 
-# --allow-releaseinfo-change because buster is now oldstable
+# --allow-releaseinfo-change for cases when stable becomes oldstable
 RUN apt-get update --allow-releaseinfo-change \\
     && apt-get install -y --no-install-recommends \\
         postgresql-client \\
@@ -10,21 +10,22 @@ RUN apt-get update --allow-releaseinfo-change \\
         ruby-foreman \\
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install poetry
-RUN poetry config virtualenvs.create false
+RUN pip install uv
 
 COPY pyproject.toml ./
-COPY poetry.lock ./
-RUN poetry install
+COPY uv.lock ./
+RUN uv sync --frozen --python-preference only-system
 
-ENV DJANGO_SETTINGS_MODULE {{ name }}.settings
+ENV DJANGO_SETTINGS_MODULE={{ name }}.settings
 ENV DJANGO_APP={{ name }}
 
-ENV GUNICORN_CMD_ARGS ""
-# If you prefer to set gunicorn options in Dockerfile, it's done like this:
-#ENV GUNICORN_CMD_ARGS "-t 600 -w1"
+#ENV GUNICORN_CMD_ARGS="-t 600 -w1"
+ENV GUNICORN_CMD_ARGS=""
 
-ENV DJANGO_MANAGEMENT_ON_START "migrate; collectstatic --noinput"
+ENV PATH="/.venv/bin:$PATH"
+
+WORKDIR "/usr/django/app"
+CMD ["script/run", "--production"]
 
 COPY . /usr/django/app'''
 }
