@@ -64,7 +64,7 @@ if $PRODUCTION; then
 	&& ./manage.py createcachetable \\
 	&& ./manage.py collectstatic --noinput \\
 	&& ./manage.py check --deploy --fail-level=CRITICAL \\
-	&& gunicorn -b 0.0.0.0:8000 -t 600 --workers 1 --threads 20 main.wsgi
+	&& gunicorn -b 0.0.0.0:8000 -t 600 --workers 1 --threads 20 {{ name }}.wsgi
 else
 	uv run python3 manage.py runserver 0.0.0.0:8000
 fi
@@ -78,7 +78,7 @@ set -x
 script/bootstrap
 
 # Create .env if not present
-MAIN_FOLDER=main
+MAIN_FOLDER={{ name }}
 if [ ! -e $MAIN_FOLDER/.env ]; then
 	# Copy template
 	cp $MAIN_FOLDER/.env.example $MAIN_FOLDER/.env
