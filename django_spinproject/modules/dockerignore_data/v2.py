@@ -1,5 +1,6 @@
 _CONTENT = {
 	'.dockerignore': '''**/__pycache__
+**/.cache
 **/.classpath
 **/.dockerignore
 **/.env

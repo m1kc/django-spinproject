@@ -3,7 +3,7 @@ _CONTENT = {
 - check
 - deploy
 
-image: python:3.8
+image: python:3.9.6-slim-bullseye
 
 services:
   - postgres:13.1-alpine
@@ -26,9 +26,16 @@ variables:
 
 cache:
   paths:
+    - venv/
     - .cache/pip
     - .cache/pypoetry
-    - venv/
+    # This caching scheme is somewhat aggressive because
+    # it caches poetry virtualenv. This is faster but can
+    # potentially result in not-completely-clean builds
+    # if there's a bug in poetry --sync.
+    # For less aggressive caching, use this instead:
+    #- .cache/pypoetry/artifacts
+    #- .cache/pypoetry/cache
 
 before_script:
   - python -V  # Print out python version for debugging
@@ -52,6 +59,8 @@ deploy_bleeding:
   image: "docker:19.03.1"
   before_script:
     - docker info
+  services: []
+  cache: {}
   script:
     - echo $DOCKER_PASSWORD | docker login --username {{ username }} --password-stdin {% if repository %}{{ repository }}{% endif %}
     - docker build -t '{{ repository }}{% if repository %}/{% endif %}{{ image }}:bleeding' .
@@ -63,6 +72,8 @@ deploy_main:
   image: "docker:19.03.1"
   before_script:
     - docker info
+  services: []
+  cache: {}
   script:
     - echo $DOCKER_PASSWORD | docker login --username {{ username }} --password-stdin {% if repository %}{{ repository }}{% endif %}
     - docker build -t '{{ repository }}{% if repository %}/{% endif %}{{ image }}' .

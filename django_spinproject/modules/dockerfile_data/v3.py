@@ -1,7 +1,7 @@
 _CONTENT = {
-	'Dockerfile': '''FROM alang/django:2.1-python3
+	'Dockerfile': '''FROM {{ base_image }}
 
-# --allow-releaseinfo-change because buster is now oldstable
+# --allow-releaseinfo-change for cases when stable becomes oldstable
 RUN apt-get update --allow-releaseinfo-change \\
     && apt-get install -y --no-install-recommends \\
         postgresql-client \\
@@ -20,11 +20,11 @@ RUN poetry install
 ENV DJANGO_SETTINGS_MODULE {{ name }}.settings
 ENV DJANGO_APP={{ name }}
 
-ENV GUNICORN_CMD_ARGS ""
-# If you prefer to set gunicorn options in Dockerfile, it's done like this:
 #ENV GUNICORN_CMD_ARGS "-t 600 -w1"
+ENV GUNICORN_CMD_ARGS ""
 
-ENV DJANGO_MANAGEMENT_ON_START "migrate; collectstatic --noinput"
+WORKDIR "/usr/django/app"
+CMD ["sh", "-c", "./manage.py migrate && ./manage.py createcachetable && ./manage.py collectstatic --noinput && ./manage.py check --deploy --fail-level=CRITICAL && gunicorn -b 0.0.0.0:8000 -t 600 --workers 1 --threads 20 main.wsgi"]
 
 COPY . /usr/django/app'''
 }

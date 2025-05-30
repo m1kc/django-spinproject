@@ -7,7 +7,7 @@ which python3 || which python
 #which virtualenv
 which poetry
 
-poetry install''',
+poetry install --sync''',
 
 	'console': '''#!/bin/bash
 set -e

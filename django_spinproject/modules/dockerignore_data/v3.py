@@ -1,5 +1,9 @@
 _CONTENT = {
-	'.dockerignore': '''**/__pycache__
+	'.dockerignore': '''*.sqlite3
+*.sqlite3-journal
+
+**/__pycache__
+**/.cache
 **/.classpath
 **/.dockerignore
 **/.env

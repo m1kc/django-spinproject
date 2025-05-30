@@ -27,6 +27,11 @@ import os
 SECRET_KEY = passthrough(env('DJANGO_SECRET_KEY'))
 DEBUG = passthrough(env('DJANGO_DEBUG'))
 ALLOWED_HOSTS = passthrough(env.list('DJANGO_ALLOWED_HOSTS'))
+CSRF_TRUSTED_ORIGINS = []
+
+for host in ALLOWED_HOSTS:
+	CSRF_TRUSTED_ORIGINS.append('http://' + host)
+	CSRF_TRUSTED_ORIGINS.append('https://' + host)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -114,8 +119,6 @@ TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
-USE_L10N = True
-
 USE_TZ = True
 
 
@@ -178,11 +181,23 @@ if env('DJANGO_DEBUG_SQL'):
 
 STATIC_URL = '/static/'
 
+# Default primary key field type
+# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 ## Whitenoise
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+STORAGES = {
+	"default": {
+		"BACKEND": "django.core.files.storage.FileSystemStorage",
+	},
+	"staticfiles": {
+		"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+		# "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+	},
+}
 """,
 		'.env.example': """DJANGO_SECRET_KEY=""
 DJANGO_DEBUG=True

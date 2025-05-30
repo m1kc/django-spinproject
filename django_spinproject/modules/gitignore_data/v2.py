@@ -1,5 +1,6 @@
 _CONTENT = {
 	'.gitignore': """.env
+.cache/
 *~
 
 
