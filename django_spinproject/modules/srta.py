@@ -6,6 +6,7 @@ from .srta_data import (
 	_V3_ENV, _V3_SYMLINKS,
 	_V4_ENV, _V4_SYMLINKS,
 	_V5_ENV, _V5_SYMLINKS,
+	_V6_ENV, _V6_SYMLINKS,
 )
 from ..generic.directory_cleaning import clean_dir
 from ..project.project_info import ProjectInfo
@@ -19,8 +20,8 @@ from typing import Optional
 class SRTAModule(BaseModule, ChmodMixin):
 	name = 'srta'
 	help_text = "Creates srta scripts and additional symlinks"
-	environments = (_V1_ENV, _V2_ENV, _V3_ENV, _V4_ENV, _V5_ENV)
-	symlinks = (_V1_SYMLINKS, _V2_SYMLINKS, _V3_SYMLINKS, _V4_SYMLINKS, _V5_SYMLINKS)
+	environments = (_V1_ENV, _V2_ENV, _V3_ENV, _V4_ENV, _V5_ENV, _V6_ENV)
+	symlinks = (_V1_SYMLINKS, _V2_SYMLINKS, _V3_SYMLINKS, _V4_SYMLINKS, _V5_SYMLINKS, _V6_SYMLINKS)
 	files_dir = 'script'
 
 	@classmethod

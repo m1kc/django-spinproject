@@ -6,7 +6,7 @@ Opinionated version of `django-admin startproject` that intends to go further an
 * 🔧 **settings.py**: slightly modified to also understand environment variables and `.env` files. This functionality requires the `django-environ` package. Also, app logger is mostly pre-configured for you.
 * 🔑 **Minimal login/logout pages** so you can set this up without reading the guide again.
 * 🔒 **Support for marking PostgreSQL databases as read-only** to prevent accidental modification of critical data.
-* 🧰 `script/bootstrap` and other [scripts to rule them all](https://github.blog/2015-06-30-scripts-to-rule-them-all/) so your fellow developers and maintainers don't ask you how to run this thing. Current versions of these scripts optimized for use with [poetry](https://python-poetry.org/), but you can easily adapt them for any Python package manager.
+* 🧰 `script/bootstrap` and other [scripts to rule them all](https://github.blog/2015-06-30-scripts-to-rule-them-all/) so your fellow developers and maintainers don't ask you how to run this thing. Current versions of these scripts optimized for use with [uv](https://docs.astral.sh/uv), but you can easily adapt them for any Python package manager.
 * 🏗️ **Dockerfile and .dockerignore**: one day your app will go to production, and we've got you covered.
 * 🏛️ **Gitlab CI config**.
 * ⚕️ **Pre-configured linter** so you can find some common problems automagically.
