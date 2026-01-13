@@ -1,6 +1,6 @@
 [project]
 name = "django-spinproject"
-version = "3.0.0-rc0"
+version = "3.0.0"
 description = "Opinionated version of `startproject` with some popular third-party packages. Starter pack includes: whitenoise, django-environ, logging, GitHub Scripts to Rule Them All, basic Dockerfile and Makefile."
 readme = "README.md"
 authors = [
