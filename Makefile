@@ -4,8 +4,8 @@ FOLDER=qqqq
 
 projectenv: project
 	cd ${FOLDER}
-	poetry add django django-environ whitenoise
-	poetry shell
+	uv add django django-environ whitenoise
+	uv run python3
 
 project: clean
 	./django_spinproject/bin/spinproject.py ${FOLDER}
