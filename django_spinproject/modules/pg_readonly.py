@@ -1,5 +1,5 @@
 from ._base import BaseModule
-from .pg_readonly_data import _V1_ENV
+from .pg_readonly_data import _V1_ENV, _V2_ENV
 from ..project.project_info import ProjectInfo
 
 import os
@@ -8,7 +8,7 @@ import os
 class PGReadonlyModule(BaseModule):
 	name = 'pg-readonly'
 	help_text = "Creates DatabaseWrapper class for readonly connection to Postgres"
-	environments = (_V1_ENV, )
+	environments = (_V1_ENV, _V2_ENV)
 	files_dir = 'pg_readonly'
 
 	@classmethod
